@@ -7,12 +7,19 @@ import Icon from '../components/atoms/Icon';
 import {useAuth} from '../contexts/Api';
 import NanumFont from '../components/atoms/NanumFont';
 import NanumInput from '../components/atoms/NanumInput';
+import {useRef} from 'react';
+import {TextInput} from 'react-native';
 
 const EmailSignScreen = () => {
   const {loginAction} = useAuth();
 
+  const passwordInputRef = useRef<TextInput | null>(null);
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const focusPassword = () => passwordInputRef?.current?.focus?.();
+  const submit = () => loginAction(email, password);
 
   return (
     <Body bounces={false}>
@@ -30,20 +37,20 @@ const EmailSignScreen = () => {
             placeholder={'Input your email address'}
             value={email}
             onChangeText={setEmail}
+            onSubmitEditing={focusPassword}
           />
 
           <Input
+            ref={passwordInputRef}
             autoCapitalize={'none'}
             placeholder={'Input password'}
             value={password}
             onChangeText={setPassword}
             secureTextEntry={true}
+            onSubmitEditing={submit}
           />
 
-          <Button
-            title={'Ready to start!'}
-            onPress={() => loginAction(email, password)}
-          />
+          <Button title={'Ready to start!'} onPress={submit} />
         </Section>
 
         <Section marginTop={26}>
