@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from '@emotion/native';
-import Section from '../components/atoms/Section';
 import Button from '../components/atoms/Button';
 import {useState} from 'react';
 import Body from '../components/atoms/Body';
 import Icon from '../components/atoms/Icon';
 import {useAuth} from '../contexts/Api';
+import NanumFont from '../components/atoms/NanumFont';
+import NanumInput from '../components/atoms/NanumInput';
 
 const EmailSignScreen = () => {
   const {loginAction} = useAuth();
@@ -14,26 +15,23 @@ const EmailSignScreen = () => {
   const [password, setPassword] = useState('');
 
   return (
-    <Body>
+    <Body bounces={false}>
       <Container>
         <Section>
           <Icon type={'logo'} />
+          <Title>{'WHAT THE TODO'}</Title>
         </Section>
 
-        <Section>
-          <Title>{'Start with Email'}</Title>
-        </Section>
+        <Section marginTop={92}>
+          <InputTitle>{'Start with Email'}</InputTitle>
 
-        <Section marginTop={11}>
           <Input
             autoCapitalize={'none'}
             placeholder={'Input your email address'}
             value={email}
             onChangeText={setEmail}
           />
-        </Section>
 
-        <Section marginTop={15}>
           <Input
             autoCapitalize={'none'}
             placeholder={'Input password'}
@@ -41,14 +39,27 @@ const EmailSignScreen = () => {
             onChangeText={setPassword}
             secureTextEntry={true}
           />
-        </Section>
 
-        <Section marginTop={15}>
           <Button
             title={'Ready to start!'}
             onPress={() => loginAction(email, password)}
           />
         </Section>
+
+        <Section marginTop={26}>
+          <Or>{'or'}</Or>
+
+          <BackButton>
+            <BackButtonTitle>
+              {'Back to select sign in with social network'}
+            </BackButtonTitle>
+          </BackButton>
+        </Section>
+
+        <Footer>
+          <FooterTitle>{'Copyright'}</FooterTitle>
+          <FooterTitle>{'Heebeancreative'}</FooterTitle>
+        </Footer>
       </Container>
     </Body>
   );
@@ -63,19 +74,68 @@ const Container = styled.View`
   padding: 0px 48px;
 `;
 
-const Title = styled.Text`
+const Section = styled.View<{marginTop?: number}>`
+  width: 100%;
+  align-items: center;
+  margin-top: ${({marginTop = 0}) => marginTop}px;
+`;
+
+const Title = styled(NanumFont)`
+  margin-top: 21px;
+  font-size: 30px;
+  line-height: 29px;
+  color: #102d2d;
+  font-weight: 800;
+`;
+
+const InputTitle = styled(NanumFont)`
+  margin-bottom: 11px;
   font-size: 17px;
   line-height: 29px;
   color: #102d2d;
+  font-weight: 800;
 `;
 
-const Input = styled.TextInput`
+const Input = styled(NanumInput)`
+  margin-bottom: 15px;
   font-size: 15px;
-  font-weight: bold;
+  font-weight: 800;
   border-width: 1px;
   border-color: #dcdcdc;
   width: 100%;
   height: 43px;
   border-radius: 21.5px;
   padding: 0px 24px;
+`;
+
+const Or = styled(NanumFont)`
+  font-size: 13px;
+  line-height: 13px;
+  font-weight: 800;
+  color: #c2c2c2;
+`;
+
+const BackButton = styled.TouchableOpacity`
+  margin-top: 17px;
+`;
+
+const BackButtonTitle = styled(NanumFont)`
+  font-size: 12px;
+  line-height: 17px;
+  font-weight: 800;
+  color: #57dadc;
+`;
+
+const Footer = styled.View`
+  position: absolute;
+  bottom: 39px;
+  width: 100%;
+  align-items: center;
+`;
+
+const FooterTitle = styled(NanumFont)`
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 800;
+  color: #c2d1d1;
 `;

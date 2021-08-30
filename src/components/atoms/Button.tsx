@@ -1,12 +1,13 @@
-import React, { FC } from "react";
-import styled from "@emotion/native";
+import React, {FC} from 'react';
+import styled from '@emotion/native';
+import NanumFont from './NanumFont';
 
 interface IProps {
   title?: string;
   onPress?: () => void;
 }
 
-const Button: FC<IProps> = ({ title, onPress }) => (
+const Button: FC<IProps> = ({title, onPress}) => (
   <Touchable onPress={onPress}>
     <Title>{title}</Title>
   </Touchable>
@@ -23,8 +24,9 @@ const Touchable = styled.TouchableOpacity`
   justify-content: center;
 `;
 
-const Title = styled.Text`
+const Title = styled(NanumFont)`
   font-size: 13px;
   line-height: 13px;
   color: #fff;
+  font-weight: 800;
 `;
