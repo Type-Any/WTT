@@ -23,8 +23,7 @@ const RootRouter = () => {
         <RootStack.Screen name={'/'} component={HomeScreen} />
       </RootStack.Group>
 
-      <RootStack.Group
-        screenOptions={{headerShown: false, presentation: 'modal'}}>
+      <RootStack.Group screenOptions={{headerShown: false}}>
         <RootStack.Screen name={'/sign'} component={SignGatewayScreen} />
         <RootStack.Screen name={'/sign/email'} component={EmailSignScreen} />
       </RootStack.Group>

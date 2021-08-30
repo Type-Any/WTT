@@ -11,4 +11,5 @@ type NavRef = NavigationContainerRef<RootStackParamList>;
 interface INavContext {
   navigate: (to: keyof RootStackParamList) => void;
   reset: (to: keyof RootStackParamList) => void;
+  goBack: () => void;
 }

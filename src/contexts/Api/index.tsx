@@ -51,7 +51,7 @@ const ApiProvider: FC<IProps> = ({children, onError}) => {
   const logoutAction = useCallback(async () => {
     await removeTokens();
     setIsLoggedIn(false);
-    reset('/sign/email');
+    reset('/sign');
   }, [setIsLoggedIn, reset]);
 
   // Auth Init

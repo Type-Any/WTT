@@ -9,9 +9,11 @@ import NanumFont from '../components/atoms/NanumFont';
 import NanumInput from '../components/atoms/NanumInput';
 import {useRef} from 'react';
 import {TextInput} from 'react-native';
+import {useNav} from '../contexts/Nav';
 
 const EmailSignScreen = () => {
   const {loginAction} = useAuth();
+  const {goBack} = useNav();
 
   const passwordInputRef = useRef<TextInput | null>(null);
 
@@ -56,7 +58,7 @@ const EmailSignScreen = () => {
         <Section marginTop={26}>
           <Or>{'or'}</Or>
 
-          <BackButton>
+          <BackButton onPress={goBack}>
             <BackButtonTitle>
               {'Back to select sign in with social network'}
             </BackButtonTitle>

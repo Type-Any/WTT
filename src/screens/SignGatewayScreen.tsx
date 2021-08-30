@@ -3,10 +3,14 @@ import styled from '@emotion/native';
 import Body from '../components/atoms/Body';
 import Icon from '../components/atoms/Icon';
 import NanumFont from '../components/atoms/NanumFont';
+import SocialButton from '../components/atoms/SocialButton';
+import {useNav} from '../contexts/Nav';
 
 const SignGatewayScreen = () => {
+  const {navigate} = useNav();
+
   return (
-    <Body>
+    <Body bounces={false}>
       <Container>
         <Section>
           <Icon type={'logo'} />
@@ -14,14 +18,16 @@ const SignGatewayScreen = () => {
         </Section>
 
         <Section marginTop={92}>
-          {/*  */}
-          {/*  */}
+          <SocialButton type={'apple'} style={{marginBottom: 10}} />
+          <SocialButton type={'facebook'} style={{marginBottom: 10}} />
+          <SocialButton type={'google'} style={{marginBottom: 10}} />
+          <SocialButton type={'twitter'} />
         </Section>
 
         <Section marginTop={26}>
           <Or>{'or'}</Or>
 
-          <EmailSignButton>
+          <EmailSignButton onPress={() => navigate('/sign/email')}>
             <EmailSignButtonTitle>
               {'Start with Email account'}
             </EmailSignButtonTitle>
