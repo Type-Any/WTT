@@ -2,6 +2,7 @@ import {NavigationContainerRef} from '@react-navigation/native';
 
 type RootStackParamList = {
   '/': undefined;
+  '/sign': undefined;
   '/sign/email': undefined;
 };
 
