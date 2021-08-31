@@ -7,7 +7,7 @@ import Icon from '../../components/atoms/Icon';
 import TodoByDayTmpl from './templates/TodoByDayTmpl';
 import TodoByCategoryTmpl from './templates/TodoByCategoryTmpl';
 
-const HomeScreen = () => {
+const CategoryListScreen = () => {
   return (
     <>
       <SafeAreaView style={{backgroundColor: '#fff'}} />
@@ -43,7 +43,7 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;
+export default CategoryListScreen;
 
 const Container = styled.View`
   flex: 1;

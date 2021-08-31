@@ -1,7 +1,8 @@
 import {NavigationContainerRef} from '@react-navigation/native';
 
 type RootStackParamList = {
-  '/': undefined;
+  '/category': undefined;
+  '/category/todo': {categoryId: number};
   '/sign': undefined;
   '/sign/email': undefined;
 };
