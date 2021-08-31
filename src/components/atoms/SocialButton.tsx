@@ -127,6 +127,5 @@ const SocialButtonTitle = styled(NanumFont)<{color?: string}>`
   margin-left: 8px;
   font-size: 13px;
   line-height: 16px;
-  font-weight: 800;
   color: ${({color = '#000'}) => color};
 `;

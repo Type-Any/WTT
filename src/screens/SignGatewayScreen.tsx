@@ -63,13 +63,11 @@ const Title = styled(NanumFont)`
   font-size: 30px;
   line-height: 29px;
   color: #102d2d;
-  font-weight: 800;
 `;
 
 const Or = styled(NanumFont)`
   font-size: 13px;
   line-height: 13px;
-  font-weight: 800;
   color: #c2c2c2;
 `;
 
@@ -80,7 +78,6 @@ const EmailSignButton = styled.TouchableOpacity`
 const EmailSignButtonTitle = styled(NanumFont)`
   font-size: 12px;
   line-height: 17px;
-  font-weight: 800;
   color: #57dadc;
 `;
 
@@ -94,6 +91,5 @@ const Footer = styled.View`
 const FooterTitle = styled(NanumFont)`
   font-size: 12px;
   line-height: 18px;
-  font-weight: 800;
   color: #c2d1d1;
 `;

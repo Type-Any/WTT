@@ -28,5 +28,4 @@ const Title = styled(NanumFont)`
   font-size: 13px;
   line-height: 13px;
   color: #fff;
-  font-weight: 800;
 `;

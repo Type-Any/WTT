@@ -1,16 +1,31 @@
-import {FC, createElement} from 'react';
+import React, {FC, createElement} from 'react';
+import {TouchableOpacity} from 'react-native';
 import {SvgProps} from 'react-native-svg';
 import Logo from '../../assets/icons/logo.svg';
+import Setting from '../../assets/icons/setting.svg';
+import Today from '../../assets/icons/today.svg';
+import Someday from '../../assets/icons/someday.svg';
+import Folder from '../../assets/icons/folder.svg';
+import Right from '../../assets/icons/right.svg';
 
 const icons = {
   logo: Logo,
+  setting: Setting,
+  today: Today,
+  someday: Someday,
+  folder: Folder,
+  right: Right,
 } as const;
 
 interface IProps extends SvgProps {
   type: keyof typeof icons;
+  onPress?: () => void;
 }
 
-const Icon: FC<IProps> = ({type, ...props}) =>
-  createElement(icons[type], props);
+const Icon: FC<IProps> = ({type, onPress, ...props}) => (
+  <TouchableOpacity onPress={onPress} activeOpacity={!onPress ? 1 : undefined}>
+    {createElement(icons[type], props)}
+  </TouchableOpacity>
+);
 
 export default Icon;

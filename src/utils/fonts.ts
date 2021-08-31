@@ -13,10 +13,12 @@ type FontWeight =
   | '800'
   | '900';
 
+const defaultFontWeight: FontWeight = '800';
+
 export const getFontFamilyFromStyle = (style: StyleProp<TextStyle>) => {
   if (Array.isArray(style)) {
     const styleArr = style.flat() as any;
-    let fontWeight: FontWeight = '400';
+    let fontWeight: FontWeight = defaultFontWeight;
     for (const styleObj of styleArr) {
       if (styleObj && styleObj['fontWeight']) {
         fontWeight = styleObj['fontWeight'];
@@ -25,7 +27,7 @@ export const getFontFamilyFromStyle = (style: StyleProp<TextStyle>) => {
 
     return switchFontFamily(fontWeight);
   } else {
-    const {fontWeight = '400'} = (style as any) || {};
+    const {fontWeight = defaultFontWeight} = (style as any) || {};
     return switchFontFamily(fontWeight);
   }
 };
