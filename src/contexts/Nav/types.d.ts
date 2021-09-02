@@ -9,8 +9,16 @@ type RootStackParamList = {
 
 type NavRef = NavigationContainerRef<RootStackParamList>;
 
+type NavigateFunctionType = <RouteName extends keyof RootStackParamList>(
+  ...args: undefined extends RootStackParamList[RouteName]
+    ?
+        | [screen: RouteName]
+        | [screen: RouteName, params: RootStackParamList[RouteName]]
+    : [screen: RouteName, params: RootStackParamList[RouteName]]
+) => void;
+
 interface INavContext {
-  navigate: (to: keyof RootStackParamList) => void;
+  navigate: NavigateFunctionType;
   reset: (to: keyof RootStackParamList) => void;
   goBack: () => void;
 }

@@ -2,7 +2,12 @@ import React, {FC} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createContext} from 'react';
 import {useRef} from 'react';
-import {INavContext, NavRef, RootStackParamList} from './types';
+import {
+  INavContext,
+  NavRef,
+  RootStackParamList,
+  NavigateFunctionType,
+} from './types';
 import {useContext} from 'react';
 
 const Context = createContext<INavContext>({
@@ -14,8 +19,8 @@ const Context = createContext<INavContext>({
 const NavProvider: FC = ({children}) => {
   const navRef = useRef<NavRef | null>(null);
 
-  const navigate = (name: keyof RootStackParamList) => {
-    navRef?.current?.navigate?.(name);
+  const navigate: NavigateFunctionType = (...args) => {
+    navRef?.current?.navigate?.(...args);
   };
 
   const reset = (name: keyof RootStackParamList) => {

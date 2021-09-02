@@ -20,7 +20,7 @@ const TodoByCategoryTmpl = () => {
         <ItemButton
           key={`category_${name}`}
           style={{marginTop: idx && 25}}
-          onPress={() => navigate('/category/todo')}>
+          onPress={() => navigate('/category/todo', {categoryId: 1})}>
           <ItemTitle>
             <Icon
               type={'folder'}

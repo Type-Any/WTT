@@ -1,12 +1,15 @@
 import React, {FC, createElement} from 'react';
 import {TouchableOpacity} from 'react-native';
 import {SvgProps} from 'react-native-svg';
+
+// icons
 import Logo from '../../assets/icons/logo.svg';
 import Setting from '../../assets/icons/setting.svg';
 import Today from '../../assets/icons/today.svg';
 import Someday from '../../assets/icons/someday.svg';
 import Folder from '../../assets/icons/folder.svg';
 import Right from '../../assets/icons/right.svg';
+import Plus from '../../assets/icons/plus.svg';
 
 const icons = {
   logo: Logo,
@@ -15,6 +18,7 @@ const icons = {
   someday: Someday,
   folder: Folder,
   right: Right,
+  plus: Plus,
 } as const;
 
 interface IProps extends SvgProps {
@@ -24,7 +28,7 @@ interface IProps extends SvgProps {
 
 const Icon: FC<IProps> = ({type, onPress, ...props}) => (
   <TouchableOpacity onPress={onPress} activeOpacity={!onPress ? 1 : undefined}>
-    {createElement(icons[type], props)}
+    {createElement(icons[type], {...props})}
   </TouchableOpacity>
 );
 
