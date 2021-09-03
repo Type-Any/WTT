@@ -2,7 +2,7 @@ import React from 'react';
 import {FlatList} from 'react-native';
 import styled from '@emotion/native';
 import {FC} from 'react';
-import TodoListItem from '../../../components/atoms/TodoListItem';
+import TodoListItem from '../../../components/molecules/TodoListItem';
 
 interface IProps {}
 

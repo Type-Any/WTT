@@ -1,9 +1,9 @@
 import React, {FC, useRef} from 'react';
 import styled from '@emotion/native';
-import Checkbox from './Checkbox';
-import NanumFont from './NanumFont';
+import Checkbox from '../atoms/Checkbox';
+import NanumFont from '../atoms/NanumFont';
 import {ViewProps, Animated, PanResponder} from 'react-native';
-import Icon from './Icon';
+import Icon from '../atoms/Icon';
 
 interface IProps extends ViewProps {
   checked: boolean;
