@@ -14,7 +14,7 @@ const DoneTmpl: FC<IProps> = () => {
 
   return (
     <FlatList
-      contentContainerStyle={{paddingHorizontal: 25, paddingTop: 32}}
+      contentContainerStyle={{paddingHorizontal: 15, paddingTop: 32}}
       data={todos}
       keyExtractor={({id}) => `${id}`}
       renderItem={({item}) => (
@@ -28,5 +28,5 @@ const DoneTmpl: FC<IProps> = () => {
 export default DoneTmpl;
 
 const Margin = styled.View`
-  height: 28px;
+  height: 16px;
 `;

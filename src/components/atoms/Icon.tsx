@@ -10,6 +10,8 @@ import Someday from '../../assets/icons/someday.svg';
 import Folder from '../../assets/icons/folder.svg';
 import Right from '../../assets/icons/right.svg';
 import Plus from '../../assets/icons/plus.svg';
+import Trash from '../../assets/icons/trash.svg';
+import List from '../../assets/icons/list.svg';
 
 const icons = {
   logo: Logo,
@@ -19,6 +21,8 @@ const icons = {
   folder: Folder,
   right: Right,
   plus: Plus,
+  trash: Trash,
+  list: List,
 } as const;
 
 interface IProps extends SvgProps {
