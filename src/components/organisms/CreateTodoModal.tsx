@@ -1,10 +1,11 @@
 import React, {FC} from 'react';
-import Modal from 'react-native-modal';
 import styled from '@emotion/native';
-import {TouchableWithoutFeedback} from 'react-native';
 import Icon from '../atoms/Icon';
 import NanumFont from '../atoms/NanumFont';
 import NanumInput from '../atoms/NanumInput';
+import KAModal from '../atoms/KAModal';
+import {useRef} from 'react';
+import {TextInput} from 'react-native';
 
 interface IProps {
   visible: boolean;
@@ -12,37 +13,49 @@ interface IProps {
 }
 
 const CreateTodoModal: FC<IProps> = ({visible, setVisible}) => {
+  const titleRef = useRef<TextInput | null>(null);
+  const descRef = useRef<TextInput | null>(null);
+
+  const blurInput = () => {
+    titleRef?.current?.blur?.();
+    descRef?.current?.blur?.();
+  };
+
   const closeModal = () => setVisible(false);
 
   return (
-    <Modal
-      isVisible={visible}
-      hasBackdrop={false}
-      style={{margin: 0, alignItems: 'center', justifyContent: 'center'}}
+    <KAModal
+      visible={visible}
       onBackButtonPress={closeModal}
-      onBackdropPress={closeModal}>
-      <TouchableWithoutFeedback
-        style={{flex: 1, backgroundColor: '#0000004c'}}
-        onPress={closeModal}>
-        <Content>
-          <Header>
-            <CategoryName>{'Shopping List'}</CategoryName>
+      onBackdropPress={closeModal}
+      onPressContent={blurInput}>
+      <Content>
+        <Header>
+          <CategoryName>{'Shopping List'}</CategoryName>
 
-            <Square onPress={() => {}}>
-              <Icon type={'down'} width={13} />
-            </Square>
-          </Header>
+          <Square onPress={() => {}}>
+            <Icon type={'down'} width={13} />
+          </Square>
+        </Header>
 
-          <Divider />
+        <Divider />
 
-          <TitleInput
-            numberOfLines={1}
-            placeholder={'New To-Do Title'}
-            placeholderTextColor={'#c2c2c2'}
-          />
-        </Content>
-      </TouchableWithoutFeedback>
-    </Modal>
+        <TitleInput
+          ref={titleRef}
+          numberOfLines={1}
+          placeholder={'New To-Do Title'}
+          placeholderTextColor={'#c2c2c2'}
+        />
+
+        <DescInput
+          ref={descRef}
+          placeholder={'Description'}
+          placeholderTextColor={'#c2c2c2'}
+          multiline={true}
+          textAlignVertical={'top'}
+        />
+      </Content>
+    </KAModal>
   );
 };
 
@@ -90,6 +103,15 @@ const TitleInput = styled(NanumInput)`
   margin-top: 12px;
   width: 100%;
   font-size: 20px;
+  line-height: 29px;
+  color: #102d2d;
+`;
+
+const DescInput = styled(NanumInput)`
+  margin-top: 3px;
+  width: 100%;
+  flex: 1;
+  font-size: 14px;
   line-height: 29px;
   color: #102d2d;
 `;
