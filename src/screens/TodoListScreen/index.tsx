@@ -5,9 +5,13 @@ import NanumFont from '../../components/atoms/NanumFont';
 import Icon from '../../components/atoms/Icon';
 import TabViewTmpl from './templates/TabSwitchTmpl';
 import {useNav} from '../../contexts/Nav';
+import {useState} from 'react';
+import CreateTodoModal from '../../components/organisms/CreateTodoModal';
 
 const TodoListScreen = () => {
   const {goBack} = useNav();
+
+  const [visible, setVisible] = useState(false);
 
   return (
     <>
@@ -39,9 +43,16 @@ const TodoListScreen = () => {
         </Section>
 
         <Footer>
-          <Icon type={'plus'} width={44} height={44} onPress={() => {}} />
+          <Icon
+            type={'plus'}
+            width={44}
+            height={44}
+            onPress={() => setVisible(true)}
+          />
         </Footer>
       </Container>
+
+      <CreateTodoModal visible={visible} setVisible={setVisible} />
     </>
   );
 };

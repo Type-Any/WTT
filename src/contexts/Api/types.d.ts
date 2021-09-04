@@ -16,19 +16,19 @@ interface ApiInstance {
   get: <Res = any>(
     endpoint: string,
     config?: AxiosRequestConfig,
-  ) => Promise<IResponseBase<Res>>;
+  ) => Promise<Res>;
   post: <Res = any>(
     endpoint: string,
     data?: any,
     config?: AxiosRequestConfig,
-  ) => Promise<IResponseBase<Res>>;
+  ) => Promise<Res>;
   patch: <Res = any>(
     endpoint: string,
     data?: any,
     config?: AxiosRequestConfig,
-  ) => Promise<IResponseBase<Res>>;
+  ) => Promise<Res>;
   delete: <Res = any>(
     endpoint: string,
     config?: AxiosRequestConfig,
-  ) => Promise<IResponseBase<Res>>;
+  ) => Promise<Res>;
 }

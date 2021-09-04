@@ -1,15 +1,33 @@
 import React, {FC} from 'react';
 import styled from '@emotion/native';
 import NanumFont from './NanumFont';
+import Icon, {AssetIconType} from './Icon';
+import {TouchableOpacityProps} from 'react-native';
 
-interface IProps {
+interface IProps extends TouchableOpacityProps {
   title?: string;
   onPress?: () => void;
+  iconRight?: AssetIconType;
+  iconLeft?: AssetIconType;
 }
 
-const Button: FC<IProps> = ({title, onPress}) => (
-  <Touchable onPress={onPress}>
+const Button: FC<IProps> = ({
+  title,
+  iconLeft,
+  iconRight,
+  onPress,
+  ...props
+}) => (
+  <Touchable onPress={onPress} {...props}>
+    {iconLeft && (
+      <Icon type={iconLeft} width={16} height={16} style={{marginRight: 8}} />
+    )}
+
     <Title>{title}</Title>
+
+    {iconRight && (
+      <Icon type={iconRight} width={16} height={16} style={{marginLeft: 8}} />
+    )}
   </Touchable>
 );
 
@@ -22,6 +40,7 @@ const Touchable = styled.TouchableOpacity`
   background-color: #354343;
   align-items: center;
   justify-content: center;
+  flex-direction: row;
 `;
 
 const Title = styled(NanumFont)`

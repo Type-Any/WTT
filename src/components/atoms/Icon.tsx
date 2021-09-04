@@ -12,6 +12,7 @@ import Right from '../../assets/icons/right.svg';
 import Plus from '../../assets/icons/plus.svg';
 import Trash from '../../assets/icons/trash.svg';
 import List from '../../assets/icons/list.svg';
+import Down from '../../assets/icons/down.svg';
 
 const icons = {
   logo: Logo,
@@ -23,17 +24,23 @@ const icons = {
   plus: Plus,
   trash: Trash,
   list: List,
+  down: Down,
 } as const;
 
+export type AssetIconType = keyof typeof icons;
+
 interface IProps extends SvgProps {
-  type: keyof typeof icons;
+  type: AssetIconType;
   onPress?: () => void;
 }
 
-const Icon: FC<IProps> = ({type, onPress, ...props}) => (
-  <TouchableOpacity onPress={onPress} activeOpacity={!onPress ? 1 : undefined}>
-    {createElement(icons[type], {...props})}
-  </TouchableOpacity>
-);
+const Icon: FC<IProps> = ({type, onPress, ...props}) =>
+  onPress ? (
+    <TouchableOpacity onPress={onPress}>
+      {createElement(icons[type], {...props})}
+    </TouchableOpacity>
+  ) : (
+    createElement(icons[type], {...props})
+  );
 
 export default Icon;

@@ -1,8 +1,8 @@
-import axios, {AxiosRequestConfig, AxiosResponse} from 'axios';
-import React, {createContext, FC, useRef, useState} from 'react';
+import axios, {AxiosError, AxiosRequestConfig, AxiosResponse} from 'axios';
+import React, {createContext, FC, useState} from 'react';
 import {useEffect} from 'react';
 import {useContext} from 'react';
-import {ApiInstance, IAuthContext} from './types';
+import {ApiInstance, IAuthContext, IResponseBase} from './types';
 import {
   readTokens,
   removeTokens,
@@ -30,7 +30,6 @@ interface IProps {
 }
 
 const ApiProvider: FC<IProps> = ({children, onError}) => {
-  const initRef = useRef<boolean>(true);
   const {reset} = useNav();
   const [isLoggedIn, setIsLoggedIn] = useState<boolean | null>(null);
 
@@ -40,7 +39,7 @@ const ApiProvider: FC<IProps> = ({children, onError}) => {
         const tokens = await emailSignApi({email, password});
         await storeTokens(tokens);
         setIsLoggedIn(true);
-        reset('/');
+        reset('/category');
       } catch (error) {
         console.log('error: ', error?.response?.data?.message);
       }
@@ -56,12 +55,9 @@ const ApiProvider: FC<IProps> = ({children, onError}) => {
 
   // Auth Init
   useEffect(() => {
-    if (initRef.current) {
-      (async () => {
-        (await readTokens()) ? setIsLoggedIn(true) : setIsLoggedIn(false);
-      })();
-      initRef.current = false;
-    }
+    (async () => {
+      (await readTokens()) ? setIsLoggedIn(true) : setIsLoggedIn(false);
+    })();
   }, [setIsLoggedIn]);
 
   // Api Instance Init
@@ -72,22 +68,20 @@ const ApiProvider: FC<IProps> = ({children, onError}) => {
       return config;
     }
 
-    async function onSuccess(response: AxiosResponse<any>) {
+    async function onSuccess(response: AxiosResponse<IResponseBase<any>>) {
       if (!response?.data?.ok) throw response;
-      return response?.data;
+      return response?.data?.result;
     }
 
-    async function handleError(error: any) {
-      handleError(error);
+    async function handleError(error: AxiosError<IResponseBase<any>>) {
+      onError?.(error);
+      const isUnauthorized = error?.response?.status === 401;
+      if (isUnauthorized) return refreshTokenAndRetry(error);
 
-      const errorCode = error?.response?.status;
+      const errorMessage =
+        error?.response?.data?.message || error?.message || 'Unexpected Error';
 
-      switch (errorCode) {
-        case 401:
-          return refreshTokenAndRetry(error);
-      }
-
-      return Promise.reject(error);
+      return Promise.reject(errorMessage);
     }
 
     async function refreshTokenAndRetry(error: any) {
