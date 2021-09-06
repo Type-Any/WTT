@@ -1,17 +1,36 @@
-import React from 'react';
+import React, {useMemo} from 'react';
 import styled from '@emotion/native';
 import {SafeAreaView, TouchableOpacity} from 'react-native';
 import NanumFont from '../../components/atoms/NanumFont';
 import Icon from '../../components/atoms/Icon';
-import TabViewTmpl from './templates/TabSwitchTmpl';
+import TabViewTmpl, {TodosTabViewProps} from './templates/TabSwitchTmpl';
 import {useNav} from '../../contexts/Nav';
 import {useState} from 'react';
 import CreateTodoModal from '../../components/organisms/CreateTodoModal';
+import {useGetTodosApi} from '../../apis/todos/useGetTodosApi';
+import {ETodoStatus} from '../../apis/todos/types';
 
 const TodoListScreen = () => {
   const {goBack} = useNav();
+  const {todos} = useGetTodosApi();
 
   const [visible, setVisible] = useState(false);
+
+  const tabProps = useMemo<TodosTabViewProps>(() => {
+    const seperated: TodosTabViewProps = {todos: [], dones: []};
+    for (const todo of todos) {
+      switch (todo.status) {
+        case ETodoStatus.Todo:
+          seperated.todos.push(todo);
+          break;
+        case ETodoStatus.Done:
+          seperated.dones.push(todo);
+          break;
+      }
+    }
+
+    return seperated;
+  }, [todos]);
 
   return (
     <>
@@ -39,7 +58,7 @@ const TodoListScreen = () => {
         </Section>
 
         <Section marginTop={48} style={{flex: 1}}>
-          <TabViewTmpl />
+          <TabViewTmpl {...tabProps} />
         </Section>
 
         <Footer>

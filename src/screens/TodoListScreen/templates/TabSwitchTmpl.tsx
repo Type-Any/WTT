@@ -3,19 +3,24 @@ import styled, {css} from '@emotion/native';
 import MustTmpl from './MustTmpl';
 import DoneTmpl from './DoneTmpl';
 import NanumFont from '../../../components/atoms/NanumFont';
+import {ITodo} from '../../../apis/todos/types';
 
-interface IProps {}
+export interface TodosTabViewProps {
+  todos: ITodo[];
+  dones: ITodo[];
+}
 
 interface ITab {
   key: 'MUST' | 'DONE';
   label: string;
 }
 
-const TabViewTmpl: FC<IProps> = ({}) => {
-  const [tabs] = useState<ITab[]>([
-    {key: 'MUST', label: 'MUST (3)'},
-    {key: 'DONE', label: 'DONE (5)'},
-  ]);
+const TabViewTmpl: FC<TodosTabViewProps> = ({todos, dones}) => {
+  const tabs: ITab[] = [
+    {key: 'MUST', label: `MUST (${todos?.length || 0})`},
+    {key: 'DONE', label: `DONE (${dones?.length || 0})`},
+  ];
+
   const [focusedIdx, setFocusedIdx] = useState(0);
   const focusedTab = tabs[focusedIdx];
 
@@ -36,9 +41,9 @@ const TabViewTmpl: FC<IProps> = ({}) => {
         {(() => {
           switch (focusedTab?.key) {
             case 'MUST':
-              return <MustTmpl />;
+              return <MustTmpl todos={todos} />;
             case 'DONE':
-              return <DoneTmpl />;
+              return <DoneTmpl dones={dones} />;
           }
         })()}
       </ContentContainer>

@@ -1,13 +1,8 @@
 import useSWR from 'swr';
 import {useApi} from '../../contexts/Api';
-import {IResponseBase} from '../../contexts/Api/types';
+import {ICategory} from './types';
 
-export interface ICategory {
-  id: number;
-  name: string;
-}
-
-export const useCategoriesApi = () => {
+export const useGetCategoriesApi = () => {
   const api = useApi();
   const {data, isValidating, error} = useSWR<ICategory[]>(
     '/categories',

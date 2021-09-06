@@ -3,25 +3,23 @@ import {FlatList} from 'react-native';
 import styled from '@emotion/native';
 import {FC} from 'react';
 import TodoListItem from '../../../components/molecules/TodoListItem';
+import {ETodoStatus, ITodo} from '../../../apis/todos/types';
 
-interface IProps {}
+interface IProps {
+  todos: ITodo[];
+}
 
-const MustTmpl: FC<IProps> = () => {
-  const todos = [
-    {id: 1, checked: true, title: `19y Macbook pro 15'`},
-    {id: 2, checked: false, title: `Edit Monitoring Metrics`},
-    {id: 3, checked: false, title: `19y Macbook pro 15'`},
-  ];
-
+const MustTmpl: FC<IProps> = ({todos}) => {
   return (
     <FlatList
       contentContainerStyle={{paddingHorizontal: 15, paddingTop: 32}}
       data={todos}
       keyExtractor={({id}) => `${id}`}
-      renderItem={({item}) => (
-        <TodoListItem checked={item?.checked} title={item?.title} />
-      )}
       ItemSeparatorComponent={Margin}
+      renderItem={({item: {status, title}}) => {
+        const checked = status === ETodoStatus.Done;
+        return <TodoListItem checked={checked} title={title} />;
+      }}
     />
   );
 };

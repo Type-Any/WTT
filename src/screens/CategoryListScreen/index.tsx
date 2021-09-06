@@ -6,14 +6,14 @@ import Icon from '../../components/atoms/Icon';
 import CategoryListItem from '../../components/molecules/CategoryListItem';
 import Button from '../../components/atoms/Button';
 import {useAuth} from '../../contexts/Api';
-import {useCategoriesApi} from '../../apis/categories/useCategories';
+import {useGetCategoriesApi} from '../../apis/categories/useGetCategoriesApi';
 import DayListItem, {
   IDayCateogry,
 } from '../../components/molecules/DayListItem';
 
 const CategoryListScreen = () => {
   const {logoutAction} = useAuth();
-  const {categories} = useCategoriesApi();
+  const {categories} = useGetCategoriesApi();
 
   const days: IDayCateogry[] = [
     {id: 99998, name: 'Today', type: 'today', count: 3},
@@ -42,18 +42,16 @@ const CategoryListScreen = () => {
           keyExtractor={({id}) => `category_${id}`}
           ItemSeparatorComponent={Margin}
           renderItem={({item}) => {
-            switch (item?.type) {
-              case 'today':
-                return <DayListItem {...item} />;
-              case 'someday':
-                return (
-                  <>
-                    <DayListItem {...item} />
-                    <Divider />
-                  </>
-                );
-              default:
-                return <CategoryListItem {...item} />;
+            const isDayType = !!item?.type;
+            if (isDayType) {
+              return (
+                <>
+                  <DayListItem {...item} />
+                  {item?.type === 'someday' && <Divider />}
+                </>
+              );
+            } else {
+              return <CategoryListItem {...item} />;
             }
           }}
         />

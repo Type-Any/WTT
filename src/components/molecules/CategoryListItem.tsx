@@ -3,8 +3,8 @@ import styled from '@emotion/native';
 import NanumFont from '../atoms/NanumFont';
 import Icon from '../atoms/Icon';
 import {useNav} from '../../contexts/Nav';
-import {ICategory} from '../../apis/categories/useCategories';
 import {TouchableOpacityProps} from 'react-native';
+import {ICategory} from '../../apis/categories/types';
 
 interface IProps extends ICategory, TouchableOpacityProps {}
 
