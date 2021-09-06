@@ -8,6 +8,7 @@ import {
   RootStackParamList,
   NavigateFunctionType,
 } from './types';
+import {RouteProp, useRoute} from '@react-navigation/core';
 import {useContext} from 'react';
 
 const Context = createContext<INavContext>({
@@ -19,20 +20,16 @@ const Context = createContext<INavContext>({
 const NavProvider: FC = ({children}) => {
   const navRef = useRef<NavRef | null>(null);
 
-  const navigate: NavigateFunctionType = (...args) => {
+  const navigate: NavigateFunctionType = (...args) =>
     navRef?.current?.navigate?.(...args);
-  };
 
-  const reset = (name: keyof RootStackParamList) => {
+  const reset = (name: keyof RootStackParamList) =>
     navRef?.current?.reset?.({
       index: 0,
       routes: [{name}],
     });
-  };
 
-  const goBack = () => {
-    navRef?.current?.goBack?.();
-  };
+  const goBack = () => navRef?.current?.goBack?.();
 
   return (
     <NavigationContainer ref={navRef}>
@@ -44,5 +41,9 @@ const NavProvider: FC = ({children}) => {
 };
 
 export const useNav = () => useContext(Context);
+export const useNavParams = <T extends keyof RootStackParamList>(path: T) => ({
+  ...(useRoute<RouteProp<RootStackParamList, T>>()
+    ?.params as RootStackParamList[typeof path]),
+});
 
 export default NavProvider;

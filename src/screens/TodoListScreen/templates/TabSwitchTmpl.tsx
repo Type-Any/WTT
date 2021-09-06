@@ -1,28 +1,33 @@
 import React, {FC, useState} from 'react';
 import styled, {css} from '@emotion/native';
-import MustTmpl from './MustTmpl';
-import DoneTmpl from './DoneTmpl';
 import NanumFont from '../../../components/atoms/NanumFont';
-import {ITodo} from '../../../apis/todos/types';
+import {ETodoStatus, ITodo} from '../../../apis/todos/types';
+import {FlatList} from 'react-native';
+import TodoListItem from '../../../components/molecules/TodoListItem';
+import {useGetTodosApi} from '../../../apis/todos/useGetTodosApi';
+import {useNavParams} from '../../../contexts/Nav';
 
-export interface TodosTabViewProps {
-  todos: ITodo[];
-  dones: ITodo[];
-}
+export interface IProps {}
 
-interface ITab {
-  key: 'MUST' | 'DONE';
-  label: string;
-}
+const TabViewTmpl: FC<IProps> = ({}) => {
+  const {categoryId} = useNavParams('/category/todo');
+  const {todos: allTodos} = useGetTodosApi(categoryId);
 
-const TabViewTmpl: FC<TodosTabViewProps> = ({todos, dones}) => {
-  const tabs: ITab[] = [
+  const [focusedIdx, setFocusedIdx] = useState(0);
+  const {todos, dones} = seperateTodos(allTodos);
+  const tabs = [
     {key: 'MUST', label: `MUST (${todos?.length || 0})`},
     {key: 'DONE', label: `DONE (${dones?.length || 0})`},
   ];
 
-  const [focusedIdx, setFocusedIdx] = useState(0);
-  const focusedTab = tabs[focusedIdx];
+  const data = (() => {
+    switch (focusedIdx) {
+      case 0:
+        return todos;
+      case 1:
+        return dones;
+    }
+  })();
 
   return (
     <Container>
@@ -38,14 +43,19 @@ const TabViewTmpl: FC<TodosTabViewProps> = ({todos, dones}) => {
       </TabBar>
 
       <ContentContainer>
-        {(() => {
-          switch (focusedTab?.key) {
-            case 'MUST':
-              return <MustTmpl todos={todos} />;
-            case 'DONE':
-              return <DoneTmpl dones={dones} />;
-          }
-        })()}
+        <FlatList
+          contentContainerStyle={{
+            paddingHorizontal: 15,
+            paddingTop: 32,
+          }}
+          data={data}
+          keyExtractor={({id}) => `${id}`}
+          ItemSeparatorComponent={Margin}
+          renderItem={({item: {status, title}}) => {
+            const checked = status === ETodoStatus.Done;
+            return <TodoListItem checked={checked} title={title} />;
+          }}
+        />
       </ContentContainer>
     </Container>
   );
@@ -57,12 +67,31 @@ const Tab: FC<{
   label: string;
   focused?: boolean;
   onPress?: () => void;
-}> = ({label, focused, onPress}) => {
-  return (
-    <TabButton focused={focused} onPress={onPress}>
-      <TabLabel focused={focused}>{label}</TabLabel>
-    </TabButton>
-  );
+}> = ({label, focused, onPress}) => (
+  <TabButton focused={focused} onPress={onPress}>
+    <TabLabel focused={focused}>{label}</TabLabel>
+  </TabButton>
+);
+
+const seperateTodos = (
+  todos: ITodo[],
+  seperated: {todos: ITodo[]; dones: ITodo[]} = {todos: [], dones: []},
+): {todos: ITodo[]; dones: ITodo[]} => {
+  const [nextTodo, ...rest] = todos;
+  if (!nextTodo) return seperated;
+
+  switch (nextTodo?.status) {
+    case ETodoStatus.Todo:
+      return seperateTodos(rest, {
+        ...seperated,
+        todos: [...seperated?.todos, nextTodo],
+      });
+    case ETodoStatus.Done:
+      return seperateTodos(rest, {
+        ...seperated,
+        dones: [...seperated?.dones, nextTodo],
+      });
+  }
 };
 
 const Container = styled.View`
@@ -71,14 +100,6 @@ const Container = styled.View`
 
 const ContentContainer = styled.View`
   flex: 1;
-`;
-
-const Content = styled.View<{focused?: boolean}>`
-  ${({focused = false}) =>
-    !focused &&
-    css`
-      display: none;
-    `}
 `;
 
 const TabBar = styled.View`
@@ -102,4 +123,8 @@ const TabLabel = styled(NanumFont)<{focused?: boolean}>`
   font-size: 14px;
   line-height: 35px;
   color: ${({focused = false}) => (focused ? '#102d2d' : '#c8c8c8')};
+`;
+
+const Margin = styled.View`
+  height: 16px;
 `;
