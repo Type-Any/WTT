@@ -41,7 +41,7 @@ const ApiProvider: FC<IProps> = ({children, onError}) => {
         setIsLoggedIn(true);
         reset('/category');
       } catch (error) {
-        console.log('error: ', error?.response?.data?.message);
+        console.log('error: ', error);
       }
     },
     [setIsLoggedIn, reset],
@@ -84,22 +84,30 @@ const ApiProvider: FC<IProps> = ({children, onError}) => {
       return Promise.reject(errorMessage);
     }
 
-    async function refreshTokenAndRetry(error: any) {
-      const {response: errorResponse} = error;
+    async function refreshTokenAndRetry(error: AxiosError<IResponseBase<any>>) {
+      const {response: errorRes} = error || {};
 
       try {
+        if (!errorRes) throw errorRes;
+
         const {refreshToken} = (await readTokens()) || {};
         if (!refreshToken) throw new Error('Refresh Token Required');
 
         const newTokens = await refreshTokenApi({refreshToken});
         await storeTokens(newTokens);
 
-        errorResponse.config.headers.Authorization = `Bearer ${newTokens?.accessToken}`;
-        const response = await axios(errorResponse?.config);
+        const {config} = errorRes || {};
+
+        config.headers.Authorization = `Bearer ${newTokens?.accessToken}`;
+        const response = await axios(config);
         return Promise.resolve(response);
-      } catch (error) {
+      } catch (error: any) {
+        const errorMessage =
+          error?.response?.data?.message ||
+          error?.message ||
+          'Unexpected Error';
         logoutAction();
-        Promise.reject(error);
+        Promise.reject(errorMessage);
       }
     }
 

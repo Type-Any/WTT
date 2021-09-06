@@ -54,6 +54,21 @@ const CreateTodoModal: FC<IProps> = ({visible, setVisible}) => {
           multiline={true}
           textAlignVertical={'top'}
         />
+
+        <Footer>
+          <CalendarButton>
+            <Icon type={'someday-gray'} />
+
+            <CalendarTitle>{'Set to D-day'}</CalendarTitle>
+          </CalendarButton>
+
+          <Icon
+            type={'checked-circle'}
+            width={40}
+            height={40}
+            onPress={() => {}}
+          />
+        </Footer>
       </Content>
     </KAModal>
   );
@@ -114,4 +129,22 @@ const DescInput = styled(NanumInput)`
   font-size: 14px;
   line-height: 29px;
   color: #102d2d;
+`;
+
+const Footer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const CalendarButton = styled.TouchableOpacity`
+  flex-direction: row;
+  align-items: center;
+`;
+
+const CalendarTitle = styled(NanumFont)`
+  margin-left: 6px;
+  font-size: 14px;
+  line-height: 29px;
+  color: #c2c2c2;
 `;

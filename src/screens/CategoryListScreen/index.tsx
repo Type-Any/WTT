@@ -6,7 +6,7 @@ import Icon from '../../components/atoms/Icon';
 import CategoryListItem from '../../components/molecules/CategoryListItem';
 import Button from '../../components/atoms/Button';
 import {useAuth} from '../../contexts/Api';
-import {useCategoriesApi} from '../../apis/category/useCategories';
+import {useCategoriesApi} from '../../apis/categories/useCategories';
 import DayListItem, {
   IDayCateogry,
 } from '../../components/molecules/DayListItem';
