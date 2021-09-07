@@ -16,8 +16,8 @@ const CategoryListScreen = () => {
   const {categories} = useGetCategoriesApi();
 
   const days: IDayCateogry[] = [
-    {id: 99998, name: 'Today', type: 'today', count: 3},
-    {id: 99999, name: 'Someday', type: 'someday', count: 4},
+    {id: 99999999998, name: 'Today', type: 'today', count: 3},
+    {id: 99999999999, name: 'Someday', type: 'someday', count: 4},
   ];
 
   return (

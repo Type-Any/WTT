@@ -4,12 +4,16 @@ import {SafeAreaView, TouchableOpacity} from 'react-native';
 import NanumFont from '../../components/atoms/NanumFont';
 import Icon from '../../components/atoms/Icon';
 import TabViewTmpl from './templates/TabSwitchTmpl';
-import {useNav} from '../../contexts/Nav';
+import {useNav, useNavParams} from '../../contexts/Nav';
 import {useState} from 'react';
-import CreateTodoModal from '../../components/organisms/CreateTodoModal';
+import CreateTodoModal from '../../components/templates/CreateTodoModal';
+import {useGetCategoriesApi} from '../../apis/categories/useGetCategoriesApi';
 
 const TodoListScreen = () => {
   const {goBack} = useNav();
+  const {categoryId} = useNavParams('/category/todo');
+  const {categories} = useGetCategoriesApi();
+  const currentCategory = categories?.find(({id}) => id === categoryId);
 
   const [visible, setVisible] = useState(false);
 
@@ -23,18 +27,18 @@ const TodoListScreen = () => {
             <HeaderTitle>
               <Icon
                 type={'right'}
-                style={{marginRight: 15, transform: [{rotate: '180deg'}]}}
+                style={{transform: [{rotate: '180deg'}]}}
                 width={13}
                 height={13}
               />
-              {'Back to Category'}
+              {`   Back to Category`}
             </HeaderTitle>
             <Icon type={'setting'} width={25} height={29} onPress={() => {}} />
           </Header>
         </TouchableOpacity>
 
         <Section marginTop={18} style={{paddingHorizontal: 25}}>
-          <Title>{'Shopping List'}</Title>
+          <Title>{currentCategory?.name}</Title>
           <Desc>{'6 Saved Items (60% Completed)'}</Desc>
         </Section>
 

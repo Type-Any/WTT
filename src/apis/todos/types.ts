@@ -1,3 +1,8 @@
+export enum ETodoStatus {
+  Todo = 'Todo',
+  Done = 'Done',
+}
+
 export interface ITodo {
   id: number;
   title: string;
@@ -6,9 +11,11 @@ export interface ITodo {
   dueDate: string; // ISO date string
 }
 
-export enum ETodoStatus {
-  Todo = 'Todo',
-  Done = 'Done',
+export interface IPostTodoRequest {
+  categoryId: number;
+  title: string;
+  desc: string;
+  dueDate: Date;
 }
 
 export interface IPatchTodoRequest {
