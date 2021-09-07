@@ -8,14 +8,24 @@ import Icon from '../atoms/Icon';
 interface IProps extends ViewProps {
   checked: boolean;
   title: string;
+  onPress?: () => void;
+  onPressTrash?: () => void;
+  onPressList?: () => void;
 }
 
 const DEFAULT_PADDING = 10;
 
-const TodoListItem: FC<IProps> = ({checked, title}) => {
+const TodoListItem: FC<IProps> = ({
+  checked,
+  title,
+  onPress,
+  onPressTrash,
+  onPressList,
+}) => {
   const gestureX = useRef(new Animated.Value(DEFAULT_PADDING)).current;
   const activatedOn = useRef<'center' | 'right'>('center');
   const lastOffset = useRef(DEFAULT_PADDING);
+  const isTapping = useRef<boolean>(false);
 
   const bgColor = gestureX.interpolate({
     inputRange: [0, DEFAULT_PADDING],
@@ -29,14 +39,36 @@ const TodoListItem: FC<IProps> = ({checked, title}) => {
 
   const panResponder = useRef(
     PanResponder.create({
+      onStartShouldSetPanResponder: () => true,
       onMoveShouldSetPanResponder: () => true,
+      onPanResponderStart: () => onTapStart(),
       onPanResponderMove: (_, {dx}) => onSwiping(dx),
-      onPanResponderRelease: () => release(),
+      onPanResponderRelease: () => {
+        endTap();
+        release();
+      },
       onPanResponderTerminate: () => release(),
     }),
   );
 
+  const expireTap = () => {
+    if (isTapping.current) isTapping.current = false;
+  };
+
+  const endTap = () => {
+    if (isTapping.current) {
+      onPress?.();
+      isTapping.current = false;
+    }
+  };
+
+  const onTapStart = () => {
+    isTapping.current = true;
+    setTimeout(expireTap, 300);
+  };
+
   const onSwiping = (dx: number) => {
+    expireTap(); // beginning of swipe means it's not tapping
     const currentX = lastOffset?.current + dx;
     if (currentX < DEFAULT_PADDING / 2) activatedOn.current = 'right';
     else activatedOn.current = 'center';
@@ -71,13 +103,13 @@ const TodoListItem: FC<IProps> = ({checked, title}) => {
 
         <RightContainer>
           <RightContent style={{width: rightWidth, overflow: 'hidden'}}>
-            <Rect bgColor={'#ec8a8a'} onPress={() => console.log('trash')}>
+            <RectBtn bgColor={'#ec8a8a'} onPress={onPressTrash}>
               <Icon type={'trash'} width={14} />
-            </Rect>
+            </RectBtn>
 
-            <Rect bgColor={'#8aabec'} onPress={() => console.log('list')}>
+            <RectBtn bgColor={'#8aabec'} onPress={onPressList}>
               <Icon type={'list'} width={14} />
-            </Rect>
+            </RectBtn>
           </RightContent>
         </RightContainer>
       </SwipeableItem>
@@ -127,7 +159,7 @@ const Title = styled(NanumFont)`
   color: #354242;
 `;
 
-const Rect = styled.TouchableOpacity<{bgColor: string}>`
+const RectBtn = styled.TouchableOpacity<{bgColor: string}>`
   width: 28px;
   height: 28px;
   background-color: ${({bgColor}) => bgColor};

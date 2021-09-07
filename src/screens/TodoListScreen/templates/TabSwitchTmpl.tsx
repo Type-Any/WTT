@@ -1,17 +1,21 @@
-import React, {FC, useState} from 'react';
-import styled, {css} from '@emotion/native';
-import NanumFont from '../../../components/atoms/NanumFont';
+import React, {useState} from 'react';
+import styled from '@emotion/native';
 import {ETodoStatus, ITodo} from '../../../apis/todos/types';
-import {FlatList} from 'react-native';
+import {FlatList, StyleSheet} from 'react-native';
 import TodoListItem from '../../../components/molecules/TodoListItem';
 import {useGetTodosApi} from '../../../apis/todos/useGetTodosApi';
 import {useNavParams} from '../../../contexts/Nav';
+import Tab from '../../../components/atoms/Tab';
+import {
+  useDoneTodoApi,
+  useUndoneTodoApi,
+} from '../../../apis/todos/usePatchTodoApi';
 
-export interface IProps {}
-
-const TabViewTmpl: FC<IProps> = ({}) => {
+const TabViewTmpl = () => {
   const {categoryId} = useNavParams('/category/todo');
   const {todos: allTodos} = useGetTodosApi(categoryId);
+  const doneTodoApi = useDoneTodoApi(categoryId);
+  const undoneTodoApi = useUndoneTodoApi(categoryId);
 
   const [focusedIdx, setFocusedIdx] = useState(0);
   const {todos, dones} = seperateTodos(allTodos);
@@ -44,16 +48,29 @@ const TabViewTmpl: FC<IProps> = ({}) => {
 
       <ContentContainer>
         <FlatList
-          contentContainerStyle={{
-            paddingHorizontal: 15,
-            paddingTop: 32,
-          }}
+          contentContainerStyle={styles.flatList}
           data={data}
-          keyExtractor={({id}) => `${id}`}
+          keyExtractor={({id}) => `todo-${id}`}
           ItemSeparatorComponent={Margin}
-          renderItem={({item: {status, title}}) => {
-            const checked = status === ETodoStatus.Done;
-            return <TodoListItem checked={checked} title={title} />;
+          renderItem={({item: {id, status, title}}) => {
+            const toggleTodo = () => {
+              switch (status) {
+                case ETodoStatus.Todo:
+                  doneTodoApi(id);
+                  break;
+                case ETodoStatus.Done:
+                  undoneTodoApi(id);
+                  break;
+              }
+            };
+
+            return (
+              <TodoListItem
+                checked={status === ETodoStatus.Done}
+                title={title}
+                onPress={toggleTodo}
+              />
+            );
           }}
         />
       </ContentContainer>
@@ -63,15 +80,12 @@ const TabViewTmpl: FC<IProps> = ({}) => {
 
 export default TabViewTmpl;
 
-const Tab: FC<{
-  label: string;
-  focused?: boolean;
-  onPress?: () => void;
-}> = ({label, focused, onPress}) => (
-  <TabButton focused={focused} onPress={onPress}>
-    <TabLabel focused={focused}>{label}</TabLabel>
-  </TabButton>
-);
+const styles = StyleSheet.create({
+  flatList: {
+    paddingHorizontal: 15,
+    paddingTop: 32,
+  },
+});
 
 const seperateTodos = (
   todos: ITodo[],
@@ -107,22 +121,6 @@ const TabBar = styled.View`
   height: 30px;
   padding: 0px 25px;
   flex-direction: row;
-`;
-
-const TabButton = styled.TouchableOpacity<{focused?: boolean}>`
-  margin-right: 19px;
-  ${({focused = false}) =>
-    focused &&
-    css`
-      border-bottom-color: #57dadc;
-      border-bottom-width: 3px;
-    `}
-`;
-
-const TabLabel = styled(NanumFont)<{focused?: boolean}>`
-  font-size: 14px;
-  line-height: 35px;
-  color: ${({focused = false}) => (focused ? '#102d2d' : '#c8c8c8')};
 `;
 
 const Margin = styled.View`
