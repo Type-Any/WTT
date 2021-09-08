@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styled from '@emotion/native';
 import {FlatList, SafeAreaView} from 'react-native';
 import NanumFont from '../../components/atoms/NanumFont';
@@ -10,10 +10,17 @@ import {useGetCategoriesApi} from '../../apis/categories/useGetCategoriesApi';
 import DayListItem, {
   IDayCateogry,
 } from '../../components/molecules/DayListItem';
+import CreateCategoryModal from '../../components/templates/CreateCategoryModal';
+import {ICategory} from '../../apis/categories/types';
+import CreateTodoModal from '../../components/templates/CreateTodoModal';
 
 const CategoryListScreen = () => {
   const {logoutAction} = useAuth();
   const {categories} = useGetCategoriesApi();
+
+  const [menuVisible, setMenuVisible] = useState(false);
+  const [categoryModalVisible, setCategoryModalVisible] = useState(false);
+  const [todoModalVisible, setTodoModalVisible] = useState(false);
 
   const days: IDayCateogry[] = [
     {id: 99999999998, name: 'Today', type: 'today', count: 3},
@@ -22,61 +29,93 @@ const CategoryListScreen = () => {
 
   return (
     <>
-      <SafeAreaView style={{backgroundColor: '#fff'}} />
+      <Screen>
+        <SafeAreaView style={{backgroundColor: '#fff'}} />
 
-      <Container>
-        <Header>
-          <Title>{'WHAT THE TODO'}</Title>
-          <Icon
-            type={'setting'}
-            width={25}
-            height={29}
-            onPress={logoutAction}
-          />
-        </Header>
+        <Container>
+          <Header>
+            <Title>{'WHAT THE TODO'}</Title>
+            <Icon
+              type={'setting'}
+              width={25}
+              height={29}
+              onPress={logoutAction}
+            />
+          </Header>
 
-        <FlatList<IDayCateogry>
-          style={{flex: 1}}
-          contentContainerStyle={{paddingTop: 52}}
-          data={[...days, ...categories]}
-          keyExtractor={({id}) => `category_${id}`}
-          ItemSeparatorComponent={Margin}
-          renderItem={({item}) => {
-            const isDayType = !!item?.type;
-            if (isDayType) {
-              return (
-                <>
-                  <DayListItem {...item} />
-                  {item?.type === 'someday' && <Divider />}
-                </>
-              );
-            } else {
-              return <CategoryListItem {...item} />;
-            }
-          }}
-        />
-      </Container>
+          <FlatList<IDayCateogry | ICategory>
+            style={{flex: 1}}
+            contentContainerStyle={{paddingTop: 52}}
+            data={[...days, ...categories]}
+            keyExtractor={({id}) => `category_${id}`}
+            ItemSeparatorComponent={Margin}
+            renderItem={({item}) => {
+              if (isDayType(item)) {
+                return (
+                  <>
+                    <DayListItem {...item} />
+                    {item?.type === 'someday' && <Divider />}
+                  </>
+                );
+              } else {
+                return <CategoryListItem {...item} />;
+              }
+            }}
+          />
+        </Container>
 
-      <Footer>
-        <FooterContent>
-          <Button
-            title={'Add New Category'}
-            iconLeft={'list'}
-            style={{marginBottom: 13}}
-          />
-          <Button
-            title={'Add New Todo'}
-            iconLeft={'list'}
-            style={{marginBottom: 9}}
-          />
-          <Icon type={'plus'} width={44} height={44} onPress={() => {}} />
-        </FooterContent>
-      </Footer>
+        <Footer>
+          <FooterContent>
+            {!!menuVisible && (
+              <>
+                <Button
+                  title={'Add New Category'}
+                  iconLeft={'list'}
+                  style={{marginBottom: 13}}
+                  onPress={() => setCategoryModalVisible(true)}
+                />
+                <Button
+                  title={'Add New Todo'}
+                  iconLeft={'list'}
+                  style={{marginBottom: 9}}
+                  onPress={() => setTodoModalVisible(true)}
+                />
+              </>
+            )}
+            <Icon
+              type={'plus'}
+              width={44}
+              height={44}
+              onPress={() => setMenuVisible(prev => !prev)}
+            />
+          </FooterContent>
+        </Footer>
+      </Screen>
+
+      <CreateCategoryModal
+        visible={categoryModalVisible}
+        setVisible={setCategoryModalVisible}
+      />
+
+      <CreateTodoModal
+        visible={todoModalVisible}
+        setVisible={setTodoModalVisible}
+      />
     </>
   );
 };
 
 export default CategoryListScreen;
+
+const isDayType = (value: ICategory | IDayCateogry): value is IDayCateogry => {
+  const {type = undefined} = (value as any) || {};
+  return !!type;
+};
+
+const Screen = styled.View`
+  flex: 1;
+  background-color: #fff;
+`;
 
 const Container = styled.View`
   flex: 1;

@@ -1,11 +1,11 @@
 import React, {FC} from 'react';
 import styled from '@emotion/native';
-import {TouchableOpacityProps} from 'react-native';
 import NanumFont from '../atoms/NanumFont';
 import Icon from '../atoms/Icon';
-import {ICategory} from '../../apis/categories/types';
 
-export interface IDayCateogry extends ICategory, TouchableOpacityProps {
+export interface IDayCateogry {
+  id: number;
+  name: string;
   type?: 'today' | 'someday';
   count?: number;
 }

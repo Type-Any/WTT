@@ -5,7 +5,7 @@ import NanumFont from '../atoms/NanumFont';
 import NanumInput from '../atoms/NanumInput';
 import KAModal from '../atoms/KAModal';
 import {useRef} from 'react';
-import {FlatList, TextInput, StyleSheet, View} from 'react-native';
+import {FlatList, TextInput, StyleSheet} from 'react-native';
 import {useGetCategoriesApi} from '../../apis/categories/useGetCategoriesApi';
 
 interface IProps {
