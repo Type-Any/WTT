@@ -1,18 +1,20 @@
-import React, {useState} from 'react';
+import React, {FC, useState} from 'react';
 import styled from '@emotion/native';
-import {ETodoStatus, ITodo} from '../../../apis/todos/types';
 import {FlatList, StyleSheet} from 'react-native';
-import TodoListItem from '../../../components/molecules/TodoListItem';
-import {useGetTodosApi} from '../../../apis/todos/useGetTodosApi';
-import {useNavParams} from '../../../contexts/Nav';
-import Tab from '../../../components/atoms/Tab';
+import {useGetTodosApi} from '../../apis/todos/useGetTodosApi';
 import {
   useDoneTodoApi,
   useUndoneTodoApi,
-} from '../../../apis/todos/usePatchTodoApi';
+} from '../../apis/todos/usePatchTodoApi';
+import Tab from '../atoms/Tab';
+import {ETodoStatus, ITodo} from '../../apis/todos/types';
+import TodoListItem from '../molecules/TodoListItem';
 
-const TabViewTmpl = () => {
-  const {categoryId} = useNavParams('/category/todo');
+interface IProps {
+  categoryId: number;
+}
+
+const TodoListTabSwitch: FC<IProps> = ({categoryId}) => {
   const {todos: allTodos} = useGetTodosApi(categoryId);
   const doneTodoApi = useDoneTodoApi(categoryId);
   const undoneTodoApi = useUndoneTodoApi(categoryId);
@@ -78,7 +80,7 @@ const TabViewTmpl = () => {
   );
 };
 
-export default TabViewTmpl;
+export default TodoListTabSwitch;
 
 const styles = StyleSheet.create({
   flatList: {

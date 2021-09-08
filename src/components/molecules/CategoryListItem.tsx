@@ -1,6 +1,5 @@
 import React, {FC} from 'react';
 import styled from '@emotion/native';
-import NanumFont from '../atoms/NanumFont';
 import Icon from '../atoms/Icon';
 import {useNav} from '../../contexts/Nav';
 import {TouchableOpacityProps} from 'react-native';
@@ -39,7 +38,7 @@ const Container = styled.TouchableOpacity`
   justify-content: space-between;
 `;
 
-const Name = styled(NanumFont)`
+const Name = styled.Text`
   font-size: 17px;
   line-height: 24px;
   color: #102d2d;

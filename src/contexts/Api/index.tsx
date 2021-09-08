@@ -9,16 +9,15 @@ import {
   storeTokens,
 } from '../../utils/asyncStorage/auth';
 import {useNav} from '../Nav';
-import {emailSignApi} from '../../apis/sign/emailSignApi';
+import {emailSignApi} from './emailSignApi';
 import {useCallback} from 'react';
-import {refreshTokenApi} from '../../apis/sign/refreshTokenApi';
+import {refreshTokenApi} from './refreshTokenApi';
 
 const apiBase = axios.create({
   baseURL: 'http://localhost:4000',
 });
 
 const ApiContext = createContext<ApiInstance>(apiBase);
-
 const AuthContext = createContext<IAuthContext>({
   isLoggedIn: null,
   loginAction: () => {},

@@ -1,6 +1,5 @@
 import React, {FC} from 'react';
 import styled, {css} from '@emotion/native';
-import NanumFont from './NanumFont';
 
 interface IProps {
   label: string;
@@ -26,7 +25,7 @@ const Touchable = styled.TouchableOpacity<{focused?: boolean}>`
     `}
 `;
 
-const Label = styled(NanumFont)<{focused?: boolean}>`
+const Label = styled.Text<{focused?: boolean}>`
   font-size: 14px;
   line-height: 35px;
   color: ${({focused = false}) => (focused ? '#102d2d' : '#c8c8c8')};

@@ -2,11 +2,10 @@ import React from 'react';
 import styled from '@emotion/native';
 import Body from '../components/atoms/Body';
 import Icon from '../components/atoms/Icon';
-import NanumFont from '../components/atoms/NanumFont';
 import SocialButton from '../components/atoms/SocialButton';
 import {useNav} from '../contexts/Nav';
 
-const SignGatewayScreen = () => {
+const SignGatewayPage = () => {
   const {navigate} = useNav();
 
   return (
@@ -43,7 +42,7 @@ const SignGatewayScreen = () => {
   );
 };
 
-export default SignGatewayScreen;
+export default SignGatewayPage;
 
 const Container = styled.View`
   flex: 1;
@@ -58,14 +57,14 @@ const Section = styled.View<{marginTop?: number}>`
   margin-top: ${({marginTop = 0}) => marginTop}px;
 `;
 
-const Title = styled(NanumFont)`
+const Title = styled.Text`
   margin-top: 21px;
   font-size: 30px;
   line-height: 29px;
   color: #102d2d;
 `;
 
-const Or = styled(NanumFont)`
+const Or = styled.Text`
   font-size: 13px;
   line-height: 13px;
   color: #c2c2c2;
@@ -75,7 +74,7 @@ const EmailSignButton = styled.TouchableOpacity`
   margin-top: 17px;
 `;
 
-const EmailSignButtonTitle = styled(NanumFont)`
+const EmailSignButtonTitle = styled.Text`
   font-size: 12px;
   line-height: 17px;
   color: #57dadc;
@@ -88,7 +87,7 @@ const Footer = styled.View`
   align-items: center;
 `;
 
-const FooterTitle = styled(NanumFont)`
+const FooterTitle = styled.Text`
   font-size: 12px;
   line-height: 18px;
   color: #c2d1d1;

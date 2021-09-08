@@ -1,12 +1,9 @@
 import React from 'react';
-import Router from './src/routers';
+import AppRouter from './src/components/templates/AppRouter';
 import ApiProvider from './src/contexts/Api';
 import NavProvider from './src/contexts/Nav';
-import {setCustomTouchableOpacity} from 'react-native-global-props';
-
-setCustomTouchableOpacity({
-  activeOpacity: 0.6,
-});
+import {setGlobalProps} from './src/utils/globalProps';
+setGlobalProps(); // set global props
 
 const App = () => {
   const onApiError = (error: any) => {
@@ -16,7 +13,7 @@ const App = () => {
   return (
     <NavProvider>
       <ApiProvider onError={onApiError}>
-        <Router />
+        <AppRouter />
       </ApiProvider>
     </NavProvider>
   );

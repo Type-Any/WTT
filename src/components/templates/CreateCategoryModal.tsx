@@ -1,7 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import styled from '@emotion/native';
 import Icon from '../atoms/Icon';
-import NanumInput from '../atoms/NanumInput';
 import KAModal from '../atoms/KAModal';
 import {useRef} from 'react';
 import {TextInput} from 'react-native';
@@ -80,7 +79,7 @@ const Divider = styled.View`
   background-color: #e7e7e7;
 `;
 
-const TitleInput = styled(NanumInput)`
+const TitleInput = styled.TextInput`
   margin-top: 12px;
   width: 100%;
   font-size: 20px;

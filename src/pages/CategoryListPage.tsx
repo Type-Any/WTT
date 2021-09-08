@@ -1,20 +1,17 @@
 import React, {useState} from 'react';
 import styled from '@emotion/native';
 import {FlatList, SafeAreaView} from 'react-native';
-import NanumFont from '../../components/atoms/NanumFont';
-import Icon from '../../components/atoms/Icon';
-import CategoryListItem from '../../components/molecules/CategoryListItem';
-import Button from '../../components/atoms/Button';
-import {useAuth} from '../../contexts/Api';
-import {useGetCategoriesApi} from '../../apis/categories/useGetCategoriesApi';
-import DayListItem, {
-  IDayCateogry,
-} from '../../components/molecules/DayListItem';
-import CreateCategoryModal from '../../components/templates/CreateCategoryModal';
-import {ICategory} from '../../apis/categories/types';
-import CreateTodoModal from '../../components/templates/CreateTodoModal';
+import Icon from '../components/atoms/Icon';
+import CategoryListItem from '../components/molecules/CategoryListItem';
+import Button from '../components/atoms/Button';
+import {useAuth} from '../contexts/Api';
+import {useGetCategoriesApi} from '../apis/categories/useGetCategoriesApi';
+import DayListItem, {IDayCateogry} from '../components/molecules/DayListItem';
+import CreateCategoryModal from '../components/templates/CreateCategoryModal';
+import {ICategory} from '../apis/categories/types';
+import CreateTodoModal from '../components/templates/CreateTodoModal';
 
-const CategoryListScreen = () => {
+const CategoryListPage = () => {
   const {logoutAction} = useAuth();
   const {categories} = useGetCategoriesApi();
 
@@ -105,7 +102,7 @@ const CategoryListScreen = () => {
   );
 };
 
-export default CategoryListScreen;
+export default CategoryListPage;
 
 const isDayType = (value: ICategory | IDayCateogry): value is IDayCateogry => {
   const {type = undefined} = (value as any) || {};
@@ -130,7 +127,7 @@ const Header = styled.View`
   justify-content: space-between;
 `;
 
-const Title = styled(NanumFont)`
+const Title = styled.Text`
   font-size: 30px;
   color: #102d2d;
 `;

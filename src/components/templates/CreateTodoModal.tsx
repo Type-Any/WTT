@@ -1,8 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import styled, {css} from '@emotion/native';
 import Icon from '../atoms/Icon';
-import NanumFont from '../atoms/NanumFont';
-import NanumInput from '../atoms/NanumInput';
 import KAModal from '../atoms/KAModal';
 import {useRef} from 'react';
 import {FlatList, TextInput, StyleSheet} from 'react-native';
@@ -142,7 +140,7 @@ const Header = styled.View`
   justify-content: space-between;
 `;
 
-const CategoryName = styled(NanumFont)`
+const CategoryName = styled.Text`
   font-size: 15px;
   line-height: 29px;
   color: #c2c2c2;
@@ -164,7 +162,7 @@ const Square = styled.TouchableOpacity`
   justify-content: center;
 `;
 
-const TitleInput = styled(NanumInput)`
+const TitleInput = styled.TextInput`
   margin-top: 12px;
   width: 100%;
   font-size: 20px;
@@ -172,7 +170,7 @@ const TitleInput = styled(NanumInput)`
   color: #102d2d;
 `;
 
-const DescInput = styled(NanumInput)`
+const DescInput = styled.TextInput`
   margin-top: 3px;
   width: 100%;
   flex: 1;
@@ -192,7 +190,7 @@ const CalendarButton = styled.TouchableOpacity`
   align-items: center;
 `;
 
-const CalendarTitle = styled(NanumFont)`
+const CalendarTitle = styled.Text`
   margin-left: 6px;
   font-size: 14px;
   line-height: 29px;
@@ -216,7 +214,7 @@ const CategoryItem = styled.TouchableOpacity`
   justify-content: center;
 `;
 
-const CategoryItemName = styled(NanumFont)`
+const CategoryItemName = styled.Text`
   font-size: 12px;
   color: #354242;
 `;

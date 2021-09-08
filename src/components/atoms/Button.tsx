@@ -1,6 +1,5 @@
 import React, {FC} from 'react';
 import styled from '@emotion/native';
-import NanumFont from './NanumFont';
 import Icon, {AssetIconType} from './Icon';
 import {TouchableOpacityProps} from 'react-native';
 
@@ -43,7 +42,7 @@ const Touchable = styled.TouchableOpacity`
   flex-direction: row;
 `;
 
-const Title = styled(NanumFont)`
+const Title = styled.Text`
   font-size: 13px;
   line-height: 13px;
   color: #fff;

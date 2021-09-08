@@ -1,7 +1,6 @@
 import React, {FC, useRef} from 'react';
 import styled from '@emotion/native';
 import Checkbox from '../atoms/Checkbox';
-import NanumFont from '../atoms/NanumFont';
 import {ViewProps, Animated, PanResponder} from 'react-native';
 import Icon from '../atoms/Icon';
 
@@ -152,7 +151,7 @@ const RightContent = styled(Animated.View)`
   align-items: center;
 `;
 
-const Title = styled(NanumFont)`
+const Title = styled.Text`
   margin-left: 13px;
   font-size: 12px;
   line-height: 14px;

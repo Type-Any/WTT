@@ -1,13 +1,12 @@
 import React from 'react';
 import styled from '@emotion/native';
 import {SafeAreaView, TouchableOpacity} from 'react-native';
-import NanumFont from '../../components/atoms/NanumFont';
-import Icon from '../../components/atoms/Icon';
-import TabViewTmpl from './templates/TabSwitchTmpl';
-import {useNav, useNavParams} from '../../contexts/Nav';
+import Icon from '../components/atoms/Icon';
+import {useNav, useNavParams} from '../contexts/Nav';
 import {useState} from 'react';
-import CreateTodoModal from '../../components/templates/CreateTodoModal';
-import {useGetCategoriesApi} from '../../apis/categories/useGetCategoriesApi';
+import CreateTodoModal from '../components/templates/CreateTodoModal';
+import {useGetCategoriesApi} from '../apis/categories/useGetCategoriesApi';
+import TodoListTabSwitch from '../components/templates/TodoListTabSwitch';
 
 const TodoListScreen = () => {
   const {goBack} = useNav();
@@ -43,7 +42,7 @@ const TodoListScreen = () => {
         </Section>
 
         <Section marginTop={48} style={{flex: 1}}>
-          <TabViewTmpl />
+          <TodoListTabSwitch categoryId={categoryId} />
         </Section>
 
         <Footer>
@@ -82,18 +81,18 @@ const Header = styled.View`
   justify-content: space-between;
 `;
 
-const HeaderTitle = styled(NanumFont)`
+const HeaderTitle = styled.Text`
   font-size: 15px;
   line-height: 14px;
   color: #c2c2c2;
 `;
 
-const Title = styled(NanumFont)`
+const Title = styled.Text`
   font-size: 30px;
   color: #102d2d;
 `;
 
-const Desc = styled(NanumFont)`
+const Desc = styled.Text`
   margin-top: 9px;
   font-size: 13px;
   line-height: 13px;

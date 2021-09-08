@@ -1,6 +1,5 @@
 import React, {FC} from 'react';
 import styled from '@emotion/native';
-import NanumFont from './NanumFont';
 import {TouchableOpacityProps} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {
@@ -123,7 +122,7 @@ const Container = styled.TouchableOpacity`
   flex-direction: row;
 `;
 
-const SocialButtonTitle = styled(NanumFont)<{color?: string}>`
+const SocialButtonTitle = styled.Text<{color?: string}>`
   margin-left: 8px;
   font-size: 13px;
   line-height: 16px;

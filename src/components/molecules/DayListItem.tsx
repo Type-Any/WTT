@@ -1,6 +1,5 @@
 import React, {FC} from 'react';
 import styled from '@emotion/native';
-import NanumFont from '../atoms/NanumFont';
 import Icon from '../atoms/Icon';
 
 export interface IDayCateogry {
@@ -38,7 +37,7 @@ const Container = styled.TouchableOpacity`
   justify-content: space-between;
 `;
 
-const Name = styled(NanumFont)`
+const Name = styled.Text`
   font-size: 17px;
   line-height: 24px;
   color: #102d2d;
@@ -53,7 +52,7 @@ const NumberTag = styled.View`
   justify-content: center;
 `;
 
-const Number = styled(NanumFont)`
+const Number = styled.Text`
   font-size: 14px;
   line-height: 26px;
   color: #fff;

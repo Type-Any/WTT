@@ -1,9 +1,8 @@
 import axios from 'axios';
-import {IResponseBase} from '../../contexts/Api/types';
+import {IResponseBase} from './types';
 
 interface IRequest {
-  email: string;
-  password: string;
+  refreshToken: string;
 }
 
 interface IResponse {
@@ -12,10 +11,10 @@ interface IResponse {
 }
 
 // Without Axios Instance
-export const emailSignApi = async (body: IRequest) => {
+export const refreshTokenApi = async (body: IRequest) => {
   try {
     const response = await axios.post<IResponseBase<IResponse>>(
-      '/sign/email',
+      '/sign/refresh',
       body,
       {baseURL: 'http://localhost:4000'},
     );

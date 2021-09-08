@@ -5,13 +5,11 @@ import {useState} from 'react';
 import Body from '../components/atoms/Body';
 import Icon from '../components/atoms/Icon';
 import {useAuth} from '../contexts/Api';
-import NanumFont from '../components/atoms/NanumFont';
-import NanumInput from '../components/atoms/NanumInput';
 import {useRef} from 'react';
 import {TextInput} from 'react-native';
 import {useNav} from '../contexts/Nav';
 
-const EmailSignScreen = () => {
+const EmailSignPage = () => {
   const {loginAction} = useAuth();
   const {goBack} = useNav();
 
@@ -74,7 +72,7 @@ const EmailSignScreen = () => {
   );
 };
 
-export default EmailSignScreen;
+export default EmailSignPage;
 
 const Container = styled.View`
   flex: 1;
@@ -89,21 +87,21 @@ const Section = styled.View<{marginTop?: number}>`
   margin-top: ${({marginTop = 0}) => marginTop}px;
 `;
 
-const Title = styled(NanumFont)`
+const Title = styled.Text`
   margin-top: 21px;
   font-size: 30px;
   line-height: 29px;
   color: #102d2d;
 `;
 
-const InputTitle = styled(NanumFont)`
+const InputTitle = styled.Text`
   margin-bottom: 11px;
   font-size: 17px;
   line-height: 29px;
   color: #102d2d;
 `;
 
-const Input = styled(NanumInput)`
+const Input = styled.TextInput`
   margin-bottom: 15px;
   font-size: 15px;
   border-width: 1px;
@@ -114,7 +112,7 @@ const Input = styled(NanumInput)`
   padding: 0px 24px;
 `;
 
-const Or = styled(NanumFont)`
+const Or = styled.Text`
   font-size: 13px;
   line-height: 13px;
   color: #c2c2c2;
@@ -124,7 +122,7 @@ const BackButton = styled.TouchableOpacity`
   margin-top: 17px;
 `;
 
-const BackButtonTitle = styled(NanumFont)`
+const BackButtonTitle = styled.Text`
   font-size: 12px;
   line-height: 17px;
   color: #57dadc;
@@ -137,7 +135,7 @@ const Footer = styled.View`
   align-items: center;
 `;
 
-const FooterTitle = styled(NanumFont)`
+const FooterTitle = styled.Text`
   font-size: 12px;
   line-height: 18px;
   color: #c2d1d1;
