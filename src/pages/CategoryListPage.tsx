@@ -10,6 +10,7 @@ import DayListItem, {IDayCateogry} from '../components/molecules/DayListItem';
 import CreateCategoryModal from '../components/templates/CreateCategoryModal';
 import {ICategory} from '../apis/categories/types';
 import CreateTodoModal from '../components/templates/CreateTodoModal';
+import {isDayCategoryType} from '../utils/typeCheck';
 
 const CategoryListPage = () => {
   const {logoutAction} = useAuth();
@@ -46,18 +47,16 @@ const CategoryListPage = () => {
             data={[...days, ...categories]}
             keyExtractor={({id}) => `category_${id}`}
             ItemSeparatorComponent={Margin}
-            renderItem={({item}) => {
-              if (isDayType(item)) {
-                return (
-                  <>
-                    <DayListItem {...item} />
-                    {item?.type === 'someday' && <Divider />}
-                  </>
-                );
-              } else {
-                return <CategoryListItem {...item} />;
-              }
-            }}
+            renderItem={({item}) =>
+              isDayCategoryType(item) ? (
+                <>
+                  <DayListItem {...item} />
+                  {item?.type === 'someday' && <Divider />}
+                </>
+              ) : (
+                <CategoryListItem {...item} />
+              )
+            }
           />
         </Container>
 
@@ -103,11 +102,6 @@ const CategoryListPage = () => {
 };
 
 export default CategoryListPage;
-
-const isDayType = (value: ICategory | IDayCateogry): value is IDayCateogry => {
-  const {type = undefined} = (value as any) || {};
-  return !!type;
-};
 
 const Screen = styled.View`
   flex: 1;
