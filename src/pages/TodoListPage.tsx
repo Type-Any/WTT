@@ -55,7 +55,11 @@ const TodoListScreen = () => {
         </Footer>
       </Container>
 
-      <CreateTodoModal visible={visible} setVisible={setVisible} />
+      <CreateTodoModal
+        visible={visible}
+        setVisible={setVisible}
+        defaultCategoryId={categoryId}
+      />
     </>
   );
 };

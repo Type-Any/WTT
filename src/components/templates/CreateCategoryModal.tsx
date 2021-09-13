@@ -21,9 +21,7 @@ const CreateCategoryModal: FC<IProps> = ({visible, setVisible}) => {
   const closeModal = () => setVisible(false);
 
   const onSubmit = () => {
-    if (!name) return;
-    closeModal();
-    createCategoryApi({name});
+    !!name && closeModal?.() && createCategoryApi({name});
   };
 
   useEffect(() => {

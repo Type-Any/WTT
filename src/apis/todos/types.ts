@@ -11,6 +11,13 @@ export interface ITodo {
   dueDate: string; // ISO date string
 }
 
+export interface IPostTodoForm {
+  categoryId?: number;
+  title?: string;
+  desc?: string;
+  dueDate?: string | null;
+}
+
 export interface IPostTodoRequest {
   categoryId: number;
   title: string;

@@ -5,52 +5,113 @@ import KAModal from '../atoms/KAModal';
 import {useRef} from 'react';
 import {FlatList, TextInput, StyleSheet} from 'react-native';
 import {useGetCategoriesApi} from '../../apis/categories/useGetCategoriesApi';
+import {Calendar} from 'react-native-calendars';
+import {usePostTodoApi} from '../../apis/todos/usePostTodoApi';
 
 interface IProps {
   visible: boolean;
   setVisible: (value: boolean) => void;
-  initCategoryId?: number;
+  defaultCategoryId?: number;
 }
 
-const CreateTodoModal: FC<IProps> = ({visible, setVisible, initCategoryId}) => {
+const CreateTodoModal: FC<IProps> = ({
+  visible,
+  setVisible,
+  defaultCategoryId,
+}) => {
   const {categories} = useGetCategoriesApi();
+  const {loading, error, excute: postTodo} = usePostTodoApi();
 
   const titleRef = useRef<TextInput | null>(null);
   const descRef = useRef<TextInput | null>(null);
 
-  const [categoryListVisible, setCategoryListVisible] = useState(false);
+  const [title, setTitle] = useState('');
+  const [desc, setDesc] = useState('');
+  const [dueDate, setDueDate] = useState<string | null>(null);
   const [selectedCategoryIdx, setSelectedCategoryIdx] = useState(0);
   const selectedCategory = categories?.[selectedCategoryIdx];
+  const [categoryListVisible, setCategoryListVisible] = useState(false);
+  const [calendarVisible, setCalendarVisible] = useState(false);
 
-  const onFocus = () => {
-    if (categoryListVisible) closeCategoryList();
+  const reset = () => {
+    setTitle('');
+    setDesc('');
+    setDueDate(null);
   };
 
-  const blur = () => {
+  const blurInputs = () => {
     titleRef?.current?.blur?.();
     descRef?.current?.blur?.();
-    if (categoryListVisible) closeCategoryList();
   };
 
-  const closeCategoryList = () => setCategoryListVisible(false);
-  const closeModal = () => setVisible(false);
+  const onFocusInput = () => {
+    closeCategoryList();
+    closeCalendar();
+  };
+
+  const onPressBackground = () => {
+    blurInputs();
+    closeCategoryList();
+    closeCalendar();
+  };
+
+  const toggleCategoryList = () => {
+    blurInputs();
+    closeCalendar();
+    setCategoryListVisible(prev => !prev);
+  };
+
+  const toggleCalendar = () => {
+    blurInputs();
+    closeCategoryList();
+    setCalendarVisible(prev => !prev);
+  };
+
+  const closeCategoryList = () => {
+    categoryListVisible && setCategoryListVisible(false);
+  };
+
+  const closeCalendar = () => {
+    calendarVisible && setCalendarVisible(false);
+  };
+
+  const closeModal = () => {
+    setVisible(false);
+    reset();
+  };
+
+  const submit = () => {
+    closeModal();
+    postTodo({
+      categoryId: selectedCategory?.id,
+      title,
+      desc,
+      dueDate,
+    });
+  };
 
   useEffect(() => {
-    const idx = categories?.findIndex(({id}) => id === initCategoryId);
-    if (idx > -1) setSelectedCategoryIdx(idx);
-  }, [initCategoryId, categories, setSelectedCategoryIdx]);
+    visible && titleRef?.current?.focus?.();
+  }, [visible]);
+
+  useEffect(() => {
+    if (visible) {
+      const idx = categories?.findIndex(({id}) => id === defaultCategoryId);
+      idx > -1 && setSelectedCategoryIdx(idx);
+    }
+  }, [defaultCategoryId, categories, setSelectedCategoryIdx, visible]);
 
   return (
     <KAModal
       visible={visible}
       onBackButtonPress={closeModal}
       onBackdropPress={closeModal}
-      onPressContent={blur}>
+      onPressContent={onPressBackground}>
       <Content>
         <Header>
           <CategoryName>{selectedCategory?.name}</CategoryName>
 
-          <Square onPress={() => setCategoryListVisible(prev => !prev)}>
+          <Square onPress={toggleCategoryList}>
             <Icon type={'down'} width={13} />
           </Square>
         </Header>
@@ -59,37 +120,45 @@ const CreateTodoModal: FC<IProps> = ({visible, setVisible, initCategoryId}) => {
 
         <TitleInput
           ref={titleRef}
+          value={title}
+          onChangeText={setTitle}
           numberOfLines={1}
           placeholder={'New To-Do Title'}
           placeholderTextColor={'#c2c2c2'}
-          onFocus={onFocus}
+          onFocus={onFocusInput}
+          onSubmitEditing={() => descRef?.current?.focus?.()}
         />
 
         <DescInput
           ref={descRef}
+          value={desc}
+          onChangeText={setDesc}
           placeholder={'Description'}
           placeholderTextColor={'#c2c2c2'}
           multiline={true}
           textAlignVertical={'top'}
-          onFocus={onFocus}
+          onFocus={onFocusInput}
+          onSubmitEditing={submit}
         />
 
         <Footer>
-          <CalendarButton>
-            <Icon type={'someday-gray'} />
+          <CalendarButton onPress={toggleCalendar}>
+            <Icon type={!!dueDate ? 'someday' : 'someday-gray'} />
 
-            <CalendarTitle>{'Set to D-day'}</CalendarTitle>
+            <SelectedDate value={dueDate}>
+              {dueDate || 'Set to D-day'}
+            </SelectedDate>
           </CalendarButton>
 
           <Icon
             type={'checked-circle'}
             width={40}
             height={40}
-            onPress={() => {}}
+            onPress={submit}
           />
         </Footer>
 
-        {!!categoryListVisible && (
+        {categoryListVisible && (
           <CategoryListContainer>
             <FlatList
               style={styles.categoryList}
@@ -108,6 +177,23 @@ const CreateTodoModal: FC<IProps> = ({visible, setVisible, initCategoryId}) => {
             />
           </CategoryListContainer>
         )}
+
+        {calendarVisible && (
+          <CalendarContainer>
+            <Calendar
+              style={styles.calendar}
+              current={'2021-09-12'}
+              minDate={'2021-09-12'}
+              onDayPress={({dateString}) => {
+                setDueDate(dateString);
+                closeCalendar();
+              }}
+              markedDates={{
+                ...(dueDate && {[dueDate]: {selected: true}}),
+              }}
+            />
+          </CalendarContainer>
+        )}
       </Content>
     </KAModal>
   );
@@ -121,6 +207,10 @@ const styles = StyleSheet.create({
   `,
   categoryListContent: css`
     padding-left: 10px;
+  `,
+  calendar: css`
+    border-radius: 9px;
+    background-color: #fff;
   `,
 });
 
@@ -190,11 +280,10 @@ const CalendarButton = styled.TouchableOpacity`
   align-items: center;
 `;
 
-const CalendarTitle = styled.Text`
+const SelectedDate = styled.Text<{value: string | null}>`
   margin-left: 6px;
   font-size: 14px;
-  line-height: 29px;
-  color: #c2c2c2;
+  color: ${({value}) => (value ? '#102d2d' : '#c2c2c2')};
 `;
 
 const CategoryListContainer = styled.View`
@@ -217,4 +306,14 @@ const CategoryItem = styled.TouchableOpacity`
 const CategoryItemName = styled.Text`
   font-size: 12px;
   color: #354242;
+`;
+
+const CalendarContainer = styled.View`
+  position: absolute;
+  bottom: 60px;
+  left: 20px;
+  width: 100%;
+  border-radius: 9px;
+  background-color: #fff;
+  box-shadow: 0px 0px 24px #0000002d;
 `;
