@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from '@emotion/native';
-import Body from '../components/atoms/Body';
 import Icon from '../components/atoms/Icon';
 import SocialButton from '../components/atoms/SocialButton';
 import {useAppNav} from '../utils/hooks/useNav';
@@ -9,36 +8,34 @@ const SignGatewayPage = () => {
   const {navigate} = useAppNav();
 
   return (
-    <Body bounces={false}>
-      <Container>
-        <Section>
-          <Icon type={'logo'} />
-          <Title>{'WHAT THE TODO'}</Title>
-        </Section>
+    <Container>
+      <Section>
+        <Icon type={'logo'} />
+        <Title>{'WHAT THE TODO'}</Title>
+      </Section>
 
-        <Section marginTop={92}>
-          <SocialButton type={'apple'} style={{marginBottom: 10}} />
-          <SocialButton type={'facebook'} style={{marginBottom: 10}} />
-          <SocialButton type={'google'} style={{marginBottom: 10}} />
-          <SocialButton type={'twitter'} />
-        </Section>
+      <Section marginTop={92}>
+        <SocialButton type={'apple'} style={{marginBottom: 10}} />
+        <SocialButton type={'facebook'} style={{marginBottom: 10}} />
+        <SocialButton type={'google'} style={{marginBottom: 10}} />
+        <SocialButton type={'twitter'} />
+      </Section>
 
-        <Section marginTop={26}>
-          <Or>{'or'}</Or>
+      <Section marginTop={26}>
+        <Or>{'or'}</Or>
 
-          <EmailSignButton onPress={() => navigate('/sign/email')}>
-            <EmailSignButtonTitle>
-              {'Start with Email account'}
-            </EmailSignButtonTitle>
-          </EmailSignButton>
-        </Section>
+        <EmailSignButton onPress={() => navigate('/sign/email')}>
+          <EmailSignButtonTitle>
+            {'Start with Email account'}
+          </EmailSignButtonTitle>
+        </EmailSignButton>
+      </Section>
 
-        <Footer>
-          <FooterTitle>{'Copyright'}</FooterTitle>
-          <FooterTitle>{'Heebeancreative'}</FooterTitle>
-        </Footer>
-      </Container>
-    </Body>
+      <Footer>
+        <FooterTitle>{'Copyright'}</FooterTitle>
+        <FooterTitle>{'Heebeancreative'}</FooterTitle>
+      </Footer>
+    </Container>
   );
 };
 

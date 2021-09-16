@@ -8,6 +8,7 @@ const AuthProvider: FC = ({children}) => {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
+    // TODO: make init procedure
     (async () => {
       const tokens = await readTokens();
       if (tokens) setIsLoggedIn(true);

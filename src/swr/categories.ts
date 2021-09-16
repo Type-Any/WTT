@@ -10,12 +10,12 @@ export const useCategories = () => {
   const {
     data: categories,
     isValidating,
-    error,
+    ...swrResponses
   } = useSWR<ICategory[]>('/categories', request.get);
 
   return {
     categories: categories || [],
     loading: !categories && isValidating,
-    error,
+    ...swrResponses,
   };
 };

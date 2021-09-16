@@ -2,7 +2,6 @@ import React from 'react';
 import styled from '@emotion/native';
 import Button from '../components/atoms/Button';
 import {useState} from 'react';
-import Body from '../components/atoms/Body';
 import Icon from '../components/atoms/Icon';
 import {useRef} from 'react';
 import {TextInput} from 'react-native';
@@ -23,53 +22,51 @@ const EmailSignPage = () => {
   };
 
   return (
-    <Body bounces={false}>
-      <Container>
-        <Section>
-          <Icon type={'logo'} />
-          <Title>{'WHAT THE TODO'}</Title>
-        </Section>
+    <Container>
+      <Section>
+        <Icon type={'logo'} />
+        <Title>{'WHAT THE TODO'}</Title>
+      </Section>
 
-        <Section marginTop={92}>
-          <InputTitle>{'Start with Email'}</InputTitle>
+      <Section marginTop={92}>
+        <InputTitle>{'Start with Email'}</InputTitle>
 
-          <Input
-            autoCapitalize={'none'}
-            placeholder={'Input your email address'}
-            value={email}
-            onChangeText={setEmail}
-            onSubmitEditing={() => passwordInputRef?.current?.focus?.()}
-          />
+        <Input
+          autoCapitalize={'none'}
+          placeholder={'Input your email address'}
+          value={email}
+          onChangeText={setEmail}
+          onSubmitEditing={() => passwordInputRef?.current?.focus?.()}
+        />
 
-          <Input
-            ref={passwordInputRef}
-            autoCapitalize={'none'}
-            placeholder={'Input password'}
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry={true}
-            onSubmitEditing={submit}
-          />
+        <Input
+          ref={passwordInputRef}
+          autoCapitalize={'none'}
+          placeholder={'Input password'}
+          value={password}
+          onChangeText={setPassword}
+          secureTextEntry={true}
+          onSubmitEditing={submit}
+        />
 
-          <Button title={'Ready to start!'} onPress={submit} />
-        </Section>
+        <Button title={'Ready to start!'} onPress={submit} />
+      </Section>
 
-        <Section marginTop={26}>
-          <Or>{'or'}</Or>
+      <Section marginTop={26}>
+        <Or>{'or'}</Or>
 
-          <BackButton onPress={goBack}>
-            <BackButtonTitle>
-              {'Back to select sign in with social network'}
-            </BackButtonTitle>
-          </BackButton>
-        </Section>
+        <BackButton onPress={goBack}>
+          <BackButtonTitle>
+            {'Back to select sign in with social network'}
+          </BackButtonTitle>
+        </BackButton>
+      </Section>
 
-        <Footer>
-          <FooterTitle>{'Copyright'}</FooterTitle>
-          <FooterTitle>{'Heebeancreative'}</FooterTitle>
-        </Footer>
-      </Container>
-    </Body>
+      <Footer>
+        <FooterTitle>{'Copyright'}</FooterTitle>
+        <FooterTitle>{'Heebeancreative'}</FooterTitle>
+      </Footer>
+    </Container>
   );
 };
 

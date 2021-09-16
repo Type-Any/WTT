@@ -1,23 +1,22 @@
 import React, {FC, useState} from 'react';
 import styled from '@emotion/native';
 import {FlatList, StyleSheet} from 'react-native';
-import {useGetTodosApi} from '../../apis/todos/useGetTodosApi';
-import {
-  useDoneTodoApi,
-  useUndoneTodoApi,
-} from '../../apis/todos/usePatchTodoApi';
 import Tab from '../atoms/Tab';
-import {ETodoStatus, ITodo} from '../../apis/todos/types';
 import TodoListItem from '../molecules/TodoListItem';
+import {ETodoStatus, ITodo, useTodos} from '../../swr/todos';
+import {useMutation} from '../../utils/hooks/useMutation';
+import {request} from '../../utils/fetcher';
 
 interface IProps {
   categoryId: number;
 }
 
 const TodoListTabSwitch: FC<IProps> = ({categoryId}) => {
-  const {todos: allTodos} = useGetTodosApi(categoryId);
-  const doneTodoApi = useDoneTodoApi(categoryId);
-  const undoneTodoApi = useUndoneTodoApi(categoryId);
+  const {todos: allTodos, mutate} = useTodos(categoryId);
+  const [updateTodoApi] = useMutation<{
+    categoryId: number;
+    status: ETodoStatus;
+  }>(request.patch, mutate);
 
   const [focusedIdx, setFocusedIdx] = useState(0);
   const {todos, dones} = seperateTodos(allTodos);
@@ -26,7 +25,7 @@ const TodoListTabSwitch: FC<IProps> = ({categoryId}) => {
     {key: 'DONE', label: `DONE (${dones?.length || 0})`},
   ];
 
-  const data = (() => {
+  const todoList = (() => {
     switch (focusedIdx) {
       case 0:
         return todos;
@@ -51,26 +50,25 @@ const TodoListTabSwitch: FC<IProps> = ({categoryId}) => {
       <ContentContainer>
         <FlatList
           contentContainerStyle={styles.flatList}
-          data={data}
+          data={todoList}
           keyExtractor={({id}) => `todo-${id}`}
           ItemSeparatorComponent={Margin}
           renderItem={({item: {id, status, title}}) => {
-            const toggleTodo = () => {
-              switch (status) {
-                case ETodoStatus.Todo:
-                  doneTodoApi(id);
-                  break;
-                case ETodoStatus.Done:
-                  undoneTodoApi(id);
-                  break;
-              }
-            };
+            const toggledStatus = (() =>
+              status === ETodoStatus.Todo
+                ? ETodoStatus.Done
+                : ETodoStatus.Todo)();
 
             return (
               <TodoListItem
                 checked={status === ETodoStatus.Done}
                 title={title}
-                onPress={toggleTodo}
+                onPress={() => {
+                  updateTodoApi(`/todos/${id}`, {
+                    categoryId,
+                    status: toggledStatus,
+                  });
+                }}
               />
             );
           }}

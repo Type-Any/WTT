@@ -27,7 +27,7 @@ const CreateTodoModal: FC<IProps> = ({
     title: string;
     desc: string;
     dueDate: Date;
-  }>('/todos', request.post);
+  }>(request.post);
 
   const titleRef = useRef<TextInput | null>(null);
   const descRef = useRef<TextInput | null>(null);
@@ -90,7 +90,7 @@ const CreateTodoModal: FC<IProps> = ({
   const submit = () => {
     if (!dueDate) return;
     closeModal();
-    postTodoApi({
+    postTodoApi('/todos', {
       categoryId: selectedCategory?.id,
       title,
       desc,

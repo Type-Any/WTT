@@ -5,11 +5,10 @@ import {RootStackParamList} from './types';
 import {useAppNav} from '../utils/hooks/useNav';
 
 // Pages
-import CategoryListPage from '../pages/CategoryListPage';
-// import TodoListPage from '../../pages/TodoListPage';
-import EmailSignPage from '../pages/EmailSignPage';
 import SignGatewayPage from '../pages/SignGatewayPage';
-import {useRoute} from '@react-navigation/core';
+import EmailSignPage from '../pages/EmailSignPage';
+import CategoryListPage from '../pages/CategoryListPage';
+import TodoListPage from '../pages/TodoListPage';
 
 const RootStack = createNativeStackNavigator<RootStackParamList>();
 const RootRouter = () => {
@@ -21,11 +20,9 @@ const RootRouter = () => {
     if (!initiated.current) {
       initiated.current = true;
     } else {
-      console.log('isLoggedIn: ', isLoggedIn);
-      const resetTo = isLoggedIn ? '/category' : '/sign/email';
       reset({
         index: 0,
-        routes: [{name: resetTo}],
+        routes: [{name: !isLoggedIn ? '/sign' : '/category'}],
       });
     }
   }, [isLoggedIn]);
@@ -33,10 +30,13 @@ const RootRouter = () => {
   return (
     <RootStack.Navigator initialRouteName={'/sign/email'}>
       <RootStack.Group screenOptions={{headerShown: false}}>
-        <RootStack.Screen name={'/category'} component={CategoryListPage} />
-        {/* <RootStack.Screen name={'/category/todo'} component={TodoListPage} /> */}
-        {/* <RootStack.Screen name={'/sign'} component={SignGatewayPage} /> */}
+        {/* Sign Routes */}
+        <RootStack.Screen name={'/sign'} component={SignGatewayPage} />
         <RootStack.Screen name={'/sign/email'} component={EmailSignPage} />
+
+        {/* Service Routes */}
+        <RootStack.Screen name={'/category'} component={CategoryListPage} />
+        <RootStack.Screen name={'/category/todo'} component={TodoListPage} />
       </RootStack.Group>
     </RootStack.Navigator>
   );

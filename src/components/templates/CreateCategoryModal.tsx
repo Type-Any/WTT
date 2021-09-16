@@ -6,6 +6,7 @@ import {useRef} from 'react';
 import {TextInput} from 'react-native';
 import {useMutation} from '../../utils/hooks/useMutation';
 import {request} from '../../utils/fetcher';
+import {useCategories} from '../../swr/categories';
 
 interface IProps {
   visible: boolean;
@@ -13,9 +14,10 @@ interface IProps {
 }
 
 const CreateCategoryModal: FC<IProps> = ({visible, setVisible}) => {
+  const {mutate} = useCategories();
   const [postCategoryApi] = useMutation<{name: string}, boolean>(
-    '/categories',
     request.post,
+    mutate,
   );
 
   const titleRef = useRef<TextInput | null>(null);
@@ -26,9 +28,8 @@ const CreateCategoryModal: FC<IProps> = ({visible, setVisible}) => {
 
   const onSubmit = () => {
     if (!name) return;
-
     closeModal?.();
-    postCategoryApi({name});
+    postCategoryApi('/categories', {name});
   };
 
   useEffect(() => {
