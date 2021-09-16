@@ -4,9 +4,11 @@ import Icon from '../atoms/Icon';
 import KAModal from '../atoms/KAModal';
 import {useRef} from 'react';
 import {FlatList, TextInput, StyleSheet} from 'react-native';
-import {useGetCategoriesApi} from '../../apis/categories/useGetCategoriesApi';
 import {Calendar} from 'react-native-calendars';
-import {usePostTodoApi} from '../../apis/todos/usePostTodoApi';
+import {useCategories} from '../../swr/categories';
+import {useMutation} from '../../utils/hooks/useMutation';
+import {request} from '../../utils/fetcher';
+import {dayToDate} from '../../utils/parsers';
 
 interface IProps {
   visible: boolean;
@@ -19,8 +21,13 @@ const CreateTodoModal: FC<IProps> = ({
   setVisible,
   defaultCategoryId,
 }) => {
-  const {categories} = useGetCategoriesApi();
-  const {loading, error, excute: postTodo} = usePostTodoApi();
+  const {categories} = useCategories();
+  const [postTodoApi] = useMutation<{
+    categoryId: number;
+    title: string;
+    desc: string;
+    dueDate: Date;
+  }>('/todos', request.post);
 
   const titleRef = useRef<TextInput | null>(null);
   const descRef = useRef<TextInput | null>(null);
@@ -81,12 +88,13 @@ const CreateTodoModal: FC<IProps> = ({
   };
 
   const submit = () => {
+    if (!dueDate) return;
     closeModal();
-    postTodo({
+    postTodoApi({
       categoryId: selectedCategory?.id,
       title,
       desc,
-      dueDate,
+      dueDate: dayToDate(dueDate),
     });
   };
 

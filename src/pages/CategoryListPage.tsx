@@ -2,19 +2,17 @@ import React, {useState} from 'react';
 import styled from '@emotion/native';
 import {FlatList, SafeAreaView} from 'react-native';
 import Icon from '../components/atoms/Icon';
+import {ICategory, useCategories} from '../swr/categories';
+import DayListItem, {IDayCateogry} from '../components/molecules/DayListItem';
+import {isDayCategoryType} from '../utils/typeCheck';
 import CategoryListItem from '../components/molecules/CategoryListItem';
 import Button from '../components/atoms/Button';
-import {useAuth} from '../contexts/Api';
-import {useGetCategoriesApi} from '../apis/categories/useGetCategoriesApi';
-import DayListItem, {IDayCateogry} from '../components/molecules/DayListItem';
+import {broadcastLogout} from '../contexts/Auth/subscription';
 import CreateCategoryModal from '../components/templates/CreateCategoryModal';
-import {ICategory} from '../apis/categories/types';
 import CreateTodoModal from '../components/templates/CreateTodoModal';
-import {isDayCategoryType} from '../utils/typeCheck';
 
 const CategoryListPage = () => {
-  const {logoutAction} = useAuth();
-  const {categories} = useGetCategoriesApi();
+  const {categories} = useCategories();
 
   const [menuVisible, setMenuVisible] = useState(false);
   const [categoryModalVisible, setCategoryModalVisible] = useState(false);
@@ -37,7 +35,7 @@ const CategoryListPage = () => {
               type={'setting'}
               width={25}
               height={29}
-              onPress={logoutAction}
+              onPress={() => broadcastLogout()}
             />
           </Header>
 
@@ -78,6 +76,7 @@ const CategoryListPage = () => {
                 />
               </>
             )}
+
             <Icon
               type={'plus'}
               width={44}

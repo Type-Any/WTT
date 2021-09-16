@@ -4,7 +4,8 @@ import Icon from '../atoms/Icon';
 import KAModal from '../atoms/KAModal';
 import {useRef} from 'react';
 import {TextInput} from 'react-native';
-import {useCreateCategoryApi} from '../../apis/categories/usePostGategoryApi';
+import {useMutation} from '../../utils/hooks/useMutation';
+import {request} from '../../utils/fetcher';
 
 interface IProps {
   visible: boolean;
@@ -12,16 +13,22 @@ interface IProps {
 }
 
 const CreateCategoryModal: FC<IProps> = ({visible, setVisible}) => {
-  const createCategoryApi = useCreateCategoryApi();
-  const titleRef = useRef<TextInput | null>(null);
+  const [postCategoryApi] = useMutation<{name: string}, boolean>(
+    '/categories',
+    request.post,
+  );
 
+  const titleRef = useRef<TextInput | null>(null);
   const [name, setName] = useState('');
 
   const blur = () => titleRef?.current?.blur?.();
   const closeModal = () => setVisible(false);
 
   const onSubmit = () => {
-    !!name && closeModal?.() && createCategoryApi({name});
+    if (!name) return;
+
+    closeModal?.();
+    postCategoryApi({name});
   };
 
   useEffect(() => {

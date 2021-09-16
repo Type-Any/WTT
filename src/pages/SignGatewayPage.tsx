@@ -3,10 +3,10 @@ import styled from '@emotion/native';
 import Body from '../components/atoms/Body';
 import Icon from '../components/atoms/Icon';
 import SocialButton from '../components/atoms/SocialButton';
-import {useNav} from '../contexts/Nav';
+import {useAppNav} from '../utils/hooks/useNav';
 
 const SignGatewayPage = () => {
-  const {navigate} = useNav();
+  const {navigate} = useAppNav();
 
   return (
     <Body bounces={false}>

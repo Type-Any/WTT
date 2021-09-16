@@ -1,14 +1,14 @@
 import React, {FC} from 'react';
 import styled from '@emotion/native';
 import Icon from '../atoms/Icon';
-import {useNav} from '../../contexts/Nav';
 import {TouchableOpacityProps} from 'react-native';
-import {ICategory} from '../../apis/categories/types';
+import {useAppNav} from '../../utils/hooks/useNav';
+import {ICategory} from '../../swr/categories';
 
 interface IProps extends ICategory, TouchableOpacityProps {}
 
 const CategoryListItem: FC<IProps> = ({id, name, style}) => {
-  const {navigate} = useNav();
+  const {navigate} = useAppNav();
 
   return (
     <Container

@@ -2,18 +2,20 @@ import React from 'react';
 import styled from '@emotion/native';
 import {SafeAreaView, TouchableOpacity} from 'react-native';
 import Icon from '../components/atoms/Icon';
-import {useNav, useNavParams} from '../contexts/Nav';
 import {useState} from 'react';
 import CreateTodoModal from '../components/templates/CreateTodoModal';
-import {useGetCategoriesApi} from '../apis/categories/useGetCategoriesApi';
 import TodoListTabSwitch from '../components/templates/TodoListTabSwitch';
+import {useAppNav, useAppRoute} from '../utils/hooks/useNav';
+import {useCategories} from '../swr/categories';
 
 const TodoListScreen = () => {
-  const {goBack} = useNav();
-  const {categoryId} = useNavParams('/category/todo');
-  const {categories} = useGetCategoriesApi();
-  const currentCategory = categories?.find(({id}) => id === categoryId);
+  const {goBack} = useAppNav();
+  const {categories} = useCategories();
+  const {
+    params: {categoryId},
+  } = useAppRoute<'/category/todo'>();
 
+  const currentCategory = categories?.find(({id}) => id === categoryId);
   const [visible, setVisible] = useState(false);
 
   return (

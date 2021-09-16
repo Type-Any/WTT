@@ -4,22 +4,23 @@ import Button from '../components/atoms/Button';
 import {useState} from 'react';
 import Body from '../components/atoms/Body';
 import Icon from '../components/atoms/Icon';
-import {useAuth} from '../contexts/Api';
 import {useRef} from 'react';
 import {TextInput} from 'react-native';
-import {useNav} from '../contexts/Nav';
+import {useAppNav} from '../utils/hooks/useNav';
+import {emailSign} from '../apis/sign/emailSign';
+import {broadcastLogin} from '../contexts/Auth/subscription';
 
 const EmailSignPage = () => {
-  const {loginAction} = useAuth();
-  const {goBack} = useNav();
+  const {goBack} = useAppNav();
 
   const passwordInputRef = useRef<TextInput | null>(null);
-
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const focusPassword = () => passwordInputRef?.current?.focus?.();
-  const submit = () => loginAction(email, password);
+  const submit = async () => {
+    const tokens = await emailSign({email, password});
+    if (tokens) broadcastLogin(tokens);
+  };
 
   return (
     <Body bounces={false}>
@@ -37,7 +38,7 @@ const EmailSignPage = () => {
             placeholder={'Input your email address'}
             value={email}
             onChangeText={setEmail}
-            onSubmitEditing={focusPassword}
+            onSubmitEditing={() => passwordInputRef?.current?.focus?.()}
           />
 
           <Input
